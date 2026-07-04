@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "@vidstack/react/player/styles/base.css";
+
+@theme {
+    --color-bg: #141311;
+    --color-fg: #f2efe9;
+    --color-card: #1d1b18;
+    --color-line: #2c2925;
+    --color-hoverbg: #26231f;
+    --color-muted: #8f8a80;
+    --color-live: oklch(0.62 0.19 25);
+    --color-accent: #eaff00;
+    --color-accent-ink: #141311;
+    --font-sans: "Archivo Variable", Helvetica, sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+}
+
+:root[data-theme="light"] {
+    --color-bg: #f4f1ea;
+    --color-fg: #1a1714;
+    --color-card: #ffffff;
+    --color-line: #e4ded2;
+    --color-hoverbg: #ebe7dd;
+    --color-muted: #6c6659;
+}
+
+html,
+body {
+    background: var(--color-bg);
+}
+
+button,
+a,
+[role="button"],
+[role="switch"],
+[role="slider"],
+input[type="range"] {
+    cursor: pointer;
+}
+
+.settings-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 12px;
+    background: transparent;
+}
+.settings-range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(
+        to right,
+        var(--color-accent) var(--fill, 50%),
+        rgba(255, 255, 255, 0.25) var(--fill, 50%)
+    );
+}
+.settings-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    margin-top: -4px;
+    border: none;
+    border-radius: 9999px;
+    background: #fff;
+}
+.settings-range::-moz-range-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.25);
+}
+.settings-range::-moz-range-progress {
+    height: 4px;
+    border-radius: 9999px;
+    background: var(--color-accent);
+}
+.settings-range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 9999px;
+    background: #fff;
+}
+
+.stage-stripes {
+    background: repeating-linear-gradient(
+        135deg,
+        #171512 0 14px,
+        #131110 14px 28px
+    );
+}
