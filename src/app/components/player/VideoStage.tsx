@@ -104,6 +104,7 @@ export function VideoStage({
   return (
     <>
       <MediaPlayer
+        id="tvp-player"
         className="group relative aspect-video w-full overflow-hidden border border-line bg-[#0c0b0a] font-sans"
         src={{ src: payload.src, type: 'application/x-mpegurl' }}
         title={payload.title}

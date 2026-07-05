@@ -10,6 +10,7 @@ export interface PlayerSettings {
   rememberVolume: boolean
   seekStep: number
   autoOpen: boolean
+  customCss: string
 }
 
 export const DEFAULT_SETTINGS: PlayerSettings = {
@@ -19,8 +20,9 @@ export const DEFAULT_SETTINGS: PlayerSettings = {
   qualityMode: 'auto',
   autoplay: true,
   rememberVolume: true,
-  seekStep: 10,
+  seekStep: 15,
   autoOpen: false,
+  customCss: '',
 }
 
 const SETTINGS_KEY = 'settings'

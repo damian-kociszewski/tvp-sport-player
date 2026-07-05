@@ -11,10 +11,12 @@ interface TrackOption {
 type TrackOptions = readonly TrackOption[] & { disabled: boolean }
 
 function TrackMenu({
+  id,
   title,
   icon,
   options,
 }: {
+  id?: string
   title: string
   icon: ReactNode
   options: TrackOptions
@@ -34,7 +36,7 @@ function TrackMenu({
   if (options.disabled || options.length === 0) return null
 
   return (
-    <div ref={rootRef} className="relative">
+    <div id={id} ref={rootRef} className="relative">
       <button
         type="button"
         title={title}
@@ -72,6 +74,7 @@ export function CaptionsMenu() {
   const options = useCaptionOptions({ off: 'Wyłączone' })
   return (
     <TrackMenu
+      id="tvp-menu-captions"
       title="Napisy"
       icon={<ClosedCaptioningIcon className="size-4.5" />}
       options={options as unknown as TrackOptions}
@@ -83,6 +86,7 @@ export function AudioMenu() {
   const options = useAudioOptions()
   return (
     <TrackMenu
+      id="tvp-menu-audio"
       title="Ścieżka dźwiękowa"
       icon={<TranslateIcon className="size-4.5" />}
       options={options as unknown as TrackOptions}

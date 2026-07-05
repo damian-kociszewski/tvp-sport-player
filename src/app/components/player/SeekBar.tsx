@@ -6,7 +6,10 @@ export function SeekBar() {
   if (end - start < 5) return null
 
   return (
-    <TimeSlider.Root className="group/slider relative inline-flex h-3.5 w-full cursor-pointer touch-none select-none items-center outline-none">
+    <TimeSlider.Root
+      id="tvp-seekbar"
+      className="group/slider relative inline-flex h-3.5 w-full cursor-pointer touch-none select-none items-center outline-none"
+    >
       <TimeSlider.Track className="relative h-1 w-full bg-white/25">
         <TimeSlider.TrackFill className="absolute h-full w-(--slider-fill) bg-accent will-change-[width]" />
       </TimeSlider.Track>

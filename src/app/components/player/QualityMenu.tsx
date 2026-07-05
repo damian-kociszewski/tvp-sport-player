@@ -23,7 +23,7 @@ export function QualityMenu() {
       : `${options.selectedQuality.height}p`
 
   return (
-    <div ref={rootRef} className="relative">
+    <div id="tvp-menu-quality" ref={rootRef} className="relative">
       <button
         type="button"
         title="Jakość"

@@ -48,6 +48,7 @@ function SeekButton({ step, dir }: { step: number; dir: -1 | 1 }) {
   const label = dir < 0 ? `Cofnij o ${step} s` : `Przewiń o ${step} s do przodu`
   return (
     <button
+      id={dir < 0 ? 'tvp-btn-seek-back' : 'tvp-btn-seek-forward'}
       type="button"
       title={label}
       aria-label={label}
@@ -71,16 +72,26 @@ export function ControlBar({ seekStep }: { seekStep: number }) {
   const live = useMediaState('live')
 
   return (
-    <Controls.Root className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-linear-to-t from-black/75 to-transparent px-3.5 pb-3 pt-10 opacity-0 data-visible:opacity-100">
+    <Controls.Root
+      id="tvp-controls"
+      className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-linear-to-t from-black/75 to-transparent px-3.5 pb-3 pt-10 opacity-0 data-visible:opacity-100"
+    >
       {!live && (
-        <Controls.Group className="flex w-full">
+        <Controls.Group id="tvp-controls-seek" className="flex w-full">
           <SeekBar />
         </Controls.Group>
       )}
 
-      <Controls.Group className="flex w-full items-center gap-1.5">
+      <Controls.Group
+        id="tvp-controls-main"
+        className="flex w-full items-center gap-1.5"
+      >
         {!live && <SeekButton step={seekStep} dir={-1} />}
-        <PlayButton title="Odtwórz / pauza (spacja)" className={iconButton}>
+        <PlayButton
+          id="tvp-btn-play"
+          title="Odtwórz / pauza (spacja)"
+          className={iconButton}
+        >
           <PlayPauseIcon />
         </PlayButton>
         {!live && <SeekButton step={seekStep} dir={1} />}
@@ -96,12 +107,20 @@ export function ControlBar({ seekStep }: { seekStep: number }) {
         <QualityMenu />
 
         {canPip && (
-          <PIPButton title="Obraz w obrazie (I)" className={iconButton}>
+          <PIPButton
+            id="tvp-btn-pip"
+            title="Obraz w obrazie (I)"
+            className={iconButton}
+          >
             <PictureInPictureIcon className="size-4.5" />
           </PIPButton>
         )}
 
-        <FullscreenButton title="Pełny ekran (F)" className={iconButton}>
+        <FullscreenButton
+          id="tvp-btn-fullscreen"
+          title="Pełny ekran (F)"
+          className={iconButton}
+        >
           <FullscreenIcon />
         </FullscreenButton>
       </Controls.Group>

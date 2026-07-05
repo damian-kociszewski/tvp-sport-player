@@ -13,16 +13,22 @@ export function Navbar({
   update: (patch: Partial<PlayerSettings>) => void
 }) {
   return (
-    <header className="relative z-30 border-b border-line bg-bg px-[clamp(16px,3vw,32px)]">
+    <header
+      id="tvp-navbar"
+      className="relative z-30 border-b border-line bg-bg px-[clamp(16px,3vw,32px)]"
+    >
       <div className="mx-auto flex h-15 w-full max-w-300 items-center gap-4">
-        <div className="items-center gap-2 flex">
+        <div id="tvp-navbar-logo" className="items-center gap-2 flex">
           <LogoMark className="size-7" />
           <div className="hidden sm:block text-base font-bold tracking-[0.04em]">
             <LogoWordmark />
           </div>
         </div>
 
-        <div className="ml-auto flex items-center gap-1">
+        <div
+          id="tvp-navbar-actions"
+          className="ml-auto flex items-center gap-1"
+        >
           <LogsMenu />
           <FaqMenu />
           <ShortcutsMenu />

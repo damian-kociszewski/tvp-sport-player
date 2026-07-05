@@ -8,9 +8,12 @@ import { LogoMark, LogoWordmark } from '../shared/Logo'
 
 export function Footer() {
   return (
-    <footer className="border-t border-line px-[clamp(16px,3vw,32px)] py-7">
+    <footer
+      id="tvp-footer"
+      className="border-t border-line px-[clamp(16px,3vw,32px)] py-7"
+    >
       <div className="mx-auto flex w-full max-w-300 flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex max-w-140 flex-col gap-2.5">
+        <div className="flex max-w-160 flex-col gap-2.5">
           <div className="flex items-center gap-2">
             <LogoMark className="size-5" />
             <span className="text-[13px] font-bold tracking-[0.04em]">
@@ -32,7 +35,10 @@ export function Footer() {
             Rozszerzenie nie zbiera ani nie wysyła żadnych danych - wszystko
             pozostaje w Twojej przeglądarce.
           </p>
-          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] text-muted">
+          <div
+            id="tvp-footer-meta"
+            className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] text-muted"
+          >
             <span>Wersja {APP_VERSION}</span>
             <span aria-hidden>·</span>
             <span>Licencja MIT</span>
@@ -47,8 +53,9 @@ export function Footer() {
             </a>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-4">
+        <div id="tvp-footer-links" className="flex shrink-0 items-center gap-4">
           <a
+            id="tvp-link-home"
             href="https://kociszew.ski/"
             target="_blank"
             rel="noreferrer"
@@ -59,6 +66,7 @@ export function Footer() {
             <IdentificationCardIcon className="size-5" />
           </a>
           <a
+            id="tvp-link-coffee"
             href="https://buymeacoffee.com/kociszewski"
             target="_blank"
             rel="noreferrer"
@@ -69,6 +77,7 @@ export function Footer() {
             <HandCoinsIcon className="size-5" />
           </a>
           <a
+            id="tvp-link-github"
             href="https://github.com/damian-kociszewski/tvp-sport-player"
             target="_blank"
             rel="noreferrer"

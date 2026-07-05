@@ -20,8 +20,41 @@ const pending = new Map<number, Pending>()
 
 logger.info('bg', 'service worker start')
 
-chrome.runtime.onInstalled.addListener(() => void chrome.action.disable())
-chrome.runtime.onStartup.addListener(() => void chrome.action.disable())
+const ICON_SIZES = [16, 32, 48, 96, 128, 256, 512, 1024]
+
+function iconSet(state: 'active' | 'inactive'): Record<number, string> {
+  const set: Record<number, string> = {}
+  for (const size of ICON_SIZES) set[size] = `icons/${state}/${size}.png`
+  return set
+}
+
+const ACTIVE_ICON = iconSet('active')
+const INACTIVE_ICON = iconSet('inactive')
+
+function setIconState(active: boolean, tabId?: number) {
+  const details: chrome.action.TabIconDetails = {
+    path: active ? ACTIVE_ICON : INACTIVE_ICON,
+  }
+  if (tabId != null) details.tabId = tabId
+  void chrome.action.setIcon(details).catch(() => {})
+  if (tabId != null) {
+    const toggle = active
+      ? chrome.action.enable(tabId)
+      : chrome.action.disable(tabId)
+    void toggle.catch(() => {})
+  }
+}
+
+async function refreshIcon(tabId: number) {
+  const key = captureKey(tabId)
+  const has = !!(await chrome.storage.session.get(key))[key]
+  setIconState(has, tabId)
+}
+
+setIconState(false)
+void chrome.action.disable()
+
+chrome.tabs.onActivated.addListener(({ tabId }) => void refreshIcon(tabId))
 
 const CORS_RULE_ID = 1
 void chrome.declarativeNetRequest.updateDynamicRules({
@@ -139,10 +172,7 @@ async function finalize(tabId: number) {
       sourceUrl,
     }
     await chrome.storage.session.set({ [key]: capture })
-    await chrome.action.enable(tabId)
-    await chrome.action.setBadgeText({ text: '●', tabId })
-    await chrome.action.setBadgeTextColor({ color: '#22c55e', tabId })
-    await chrome.action.setBadgeBackgroundColor({ color: [0, 0, 0, 0], tabId })
+    setIconState(true, tabId)
     logger.info('bg', 'wybrano strumień', url.slice(0, 90))
 
     if (!hadCapture && (await loadSettings()).autoOpen) {
@@ -185,8 +215,7 @@ function clearTab(tabId: number, reason: string) {
   pending.delete(tabId)
   seenUrls.delete(tabId)
   void chrome.storage.session.remove(captureKey(tabId))
-  void chrome.action.setBadgeText({ text: '', tabId }).catch(() => {})
-  void chrome.action.disable(tabId).catch(() => {})
+  setIconState(false, tabId)
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
@@ -211,8 +240,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       | undefined
     if (!capture) {
       logger.warn('bg', 'klik bez capture - wyłączam ikonkę')
-      await chrome.action.setBadgeText({ text: '', tabId: tab.id })
-      await chrome.action.disable(tab.id)
+      setIconState(false, tab.id)
       return
     }
 

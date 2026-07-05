@@ -25,7 +25,10 @@ export function ErrorOverlay({
 }) {
   const { title, detail } = MESSAGES[error]
   return (
-    <div className="stage-stripes absolute inset-0 z-20 flex flex-col items-center justify-center gap-2.5 px-6 text-center">
+    <div
+      id="tvp-error"
+      className="stage-stripes absolute inset-0 z-20 flex flex-col items-center justify-center gap-2.5 px-6 text-center"
+    >
       <div className="text-lg font-bold tracking-[-0.01em] text-white/85">
         {title}
       </div>

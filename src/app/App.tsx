@@ -8,7 +8,10 @@ import { useSettings } from './useSettings'
 
 function MissingPayload() {
   return (
-    <div className="stage-stripes relative flex aspect-video w-full flex-col items-center justify-center gap-2.5 overflow-hidden border border-line px-6 text-center">
+    <div
+      id="tvp-missing"
+      className="stage-stripes relative flex aspect-video w-full flex-col items-center justify-center gap-2.5 overflow-hidden border border-line px-6 text-center"
+    >
       <div className="text-lg font-bold tracking-[-0.01em] text-white/85">
         Brak danych transmisji
       </div>
@@ -17,6 +20,14 @@ function MissingPayload() {
       </div>
     </div>
   )
+}
+
+function CustomCss({ css }: { css: string }) {
+  const ref = useRef<HTMLStyleElement>(null)
+  useEffect(() => {
+    if (ref.current) ref.current.textContent = css
+  }, [css])
+  return <style ref={ref} />
 }
 
 function useThemeAttribute(theme: Theme) {
@@ -45,11 +56,20 @@ export function App() {
   if (ready && !initialSettings.current) initialSettings.current = settings
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg font-sans text-fg">
+    <div
+      id="tvp-app"
+      className="flex min-h-dvh flex-col bg-bg font-sans text-fg"
+    >
       <Navbar settings={settings} update={update} />
 
-      <main className="flex flex-1 flex-col items-center justify-start p-[clamp(16px,2vw,40px)]">
-        <div className="flex w-[min(1200px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-4">
+      <main
+        id="tvp-main"
+        className="flex flex-1 flex-col items-center justify-start p-[clamp(16px,2vw,40px)]"
+      >
+        <div
+          id="tvp-content"
+          className="flex w-[min(1200px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-4"
+        >
           {state.status === 'missing' && <MissingPayload />}
           {state.status === 'ready' && initialSettings.current && (
             <>
@@ -63,6 +83,7 @@ export function App() {
       </main>
 
       <Footer />
+      <CustomCss css={settings.customCss} />
     </div>
   )
 }

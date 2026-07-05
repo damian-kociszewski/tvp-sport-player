@@ -1,4 +1,8 @@
-import { ArrowCounterClockwiseIcon, GearSixIcon } from '@phosphor-icons/react'
+import {
+  ArrowCounterClockwiseIcon,
+  BracketsCurlyIcon,
+  GearSixIcon,
+} from '@phosphor-icons/react'
 import { cn } from 'cnfast'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -7,6 +11,7 @@ import {
   type QualityMode,
   type Theme,
 } from '../../../shared/settings'
+import { CssModal } from './CssModal'
 import { MenuHeader } from './MenuHeader'
 
 function Row({
@@ -120,6 +125,7 @@ export function SettingsMenu({
   update: (patch: Partial<PlayerSettings>) => void
 }) {
   const [open, setOpen] = useState(false)
+  const [cssOpen, setCssOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -134,6 +140,7 @@ export function SettingsMenu({
   return (
     <div ref={rootRef} className="relative">
       <button
+        id="tvp-menu-settings"
         type="button"
         title="Ustawienia"
         aria-label="Ustawienia"
@@ -147,7 +154,10 @@ export function SettingsMenu({
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-75 overflow-hidden border border-line bg-card pb-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+        <div
+          id="tvp-settings-panel"
+          className="absolute right-0 top-[calc(100%+8px)] z-40 w-80 overflow-hidden border border-line bg-card pb-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+        >
           <MenuHeader title="Ustawienia" />
           <Row
             label="Głośność domyślna"
@@ -157,18 +167,18 @@ export function SettingsMenu({
               <input
                 type="range"
                 min={0}
-                max={100}
-                value={Math.round(settings.defaultVolume * 100)}
+                max={200}
+                value={Math.round(settings.defaultVolume * 200)}
                 onChange={(e) =>
-                  update({ defaultVolume: Number(e.target.value) / 100 })
+                  update({ defaultVolume: Number(e.target.value) / 200 })
                 }
                 className="settings-range w-25 cursor-pointer outline-none"
                 style={{
-                  ['--fill' as string]: `${Math.round(settings.defaultVolume * 100)}%`,
+                  ['--fill' as string]: `${settings.defaultVolume * 100}%`,
                 }}
               />
-              <span className="w-6 text-right font-mono text-[11px] text-muted">
-                {Math.round(settings.defaultVolume * 100)}
+              <span className="w-10 text-right font-mono text-[11px] text-muted">
+                {(settings.defaultVolume * 100).toFixed(1)}
               </span>
             </div>
           </Row>
@@ -241,19 +251,45 @@ export function SettingsMenu({
             />
           </Row>
 
+          <Row
+            label="Własny CSS"
+            hint="Dodatkowe reguły CSS wstrzykiwane do odtwarzacza."
+            stack
+          >
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false)
+                setCssOpen(true)
+              }}
+              className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:bg-hoverbg hover:text-fg"
+            >
+              <BracketsCurlyIcon className="size-3.5" />
+              Edytuj CSS
+            </button>
+          </Row>
+
           <div className="mx-3 my-1 border-t border-line" />
 
           <div className="px-3 py-1.5">
             <button
               type="button"
               onClick={() => update(DEFAULT_SETTINGS)}
-              className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:bg-hoverbg hover:text-fg"
+              className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:border-live/40 hover:bg-hoverbg hover:text-live"
             >
               <ArrowCounterClockwiseIcon className="size-3.5" />
               Resetuj ustawienia
             </button>
           </div>
         </div>
+      )}
+
+      {cssOpen && (
+        <CssModal
+          initial={settings.customCss}
+          onSave={(css) => update({ customCss: css })}
+          onClose={() => setCssOpen(false)}
+        />
       )}
     </div>
   )

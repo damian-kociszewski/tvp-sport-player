@@ -18,14 +18,20 @@ function VolumeIcon() {
 
 export function VolumeControl() {
   return (
-    <div className="flex items-center gap-1">
+    <div id="tvp-volume" className="flex items-center gap-1">
       <MuteButton
+        id="tvp-btn-mute"
         title="Wycisz (M)"
         className="mr-1.5 flex size-9 items-center justify-center text-white hover:bg-white/12"
       >
         <VolumeIcon />
       </MuteButton>
-      <VolumeSlider.Root className="group/vol relative inline-flex h-9 w-25 cursor-pointer touch-none select-none items-center outline-none">
+      <VolumeSlider.Root
+        id="tvp-volume-slider"
+        step={0.5}
+        keyStep={0.5}
+        className="group/vol relative inline-flex h-9 w-25 cursor-pointer touch-none select-none items-center outline-none"
+      >
         <VolumeSlider.Track className="relative h-1 w-full bg-white/25">
           <VolumeSlider.TrackFill className="absolute h-full w-(--slider-fill) bg-white will-change-[width]" />
         </VolumeSlider.Track>

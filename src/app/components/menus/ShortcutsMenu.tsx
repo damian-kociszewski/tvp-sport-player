@@ -49,6 +49,7 @@ export function ShortcutsMenu() {
   return (
     <div ref={rootRef} className="relative">
       <button
+        id="tvp-menu-shortcuts"
         type="button"
         title="Skróty klawiszowe"
         aria-label="Skróty klawiszowe"
@@ -62,7 +63,10 @@ export function ShortcutsMenu() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-72 overflow-hidden border border-line bg-card pb-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+        <div
+          id="tvp-shortcuts-panel"
+          className="absolute right-0 top-[calc(100%+8px)] z-40 w-72 overflow-hidden border border-line bg-card pb-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+        >
           <MenuHeader title="Skróty klawiszowe" />
           {SHORTCUTS.map((s) => (
             <div

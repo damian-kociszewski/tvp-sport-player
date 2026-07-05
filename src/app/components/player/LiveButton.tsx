@@ -13,7 +13,7 @@ export function LiveButton() {
 
   if (!live) {
     return (
-      <span className={cn(pill, 'bg-white/12 text-white/80')}>
+      <span id="tvp-live" className={cn(pill, 'bg-white/12 text-white/80')}>
         <span className="size-1.5 bg-white/70" />
         <span className={label}>NAGRANIE</span>
       </span>
@@ -22,6 +22,7 @@ export function LiveButton() {
 
   return (
     <button
+      id="tvp-live"
       type="button"
       title="Przejdź na żywo"
       onClick={() => {
