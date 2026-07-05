@@ -4,7 +4,7 @@ import '@fontsource/jetbrains-mono/latin-400.css'
 import '@fontsource/jetbrains-mono/latin-500.css'
 import '@fontsource/jetbrains-mono/latin-ext-400.css'
 import '@fontsource/jetbrains-mono/latin-ext-500.css'
-import './player.css'
+import './main.css'
 import { logger } from '../shared/logger'
 import { App } from './App'
 

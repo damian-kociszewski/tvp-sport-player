@@ -28,13 +28,13 @@ export function QualityMenu() {
         type="button"
         title="Jakość"
         onClick={() => setOpen((v) => !v)}
-        className="h-9 cursor-pointer rounded-lg px-2.5 font-mono text-xs font-medium text-white hover:bg-white/12"
+        className="h-9 cursor-pointer px-2.5 font-mono text-xs font-medium text-white hover:bg-white/12"
       >
         {currentLabel}
       </button>
 
       {open && (
-        <div className="absolute bottom-[calc(100%+10px)] right-0 z-20 flex min-w-32.5 flex-col gap-0.5 rounded-xl border border-white/14 bg-[rgba(20,19,17,0.95)] p-1.25 backdrop-blur-lg">
+        <div className="absolute bottom-[calc(100%+10px)] right-0 z-20 flex min-w-32.5 flex-col gap-0.5 border border-white/14 bg-[rgba(20,19,17,0.95)] p-1.25 backdrop-blur-lg">
           {options.map(({ label, value, select, selected, autoSelected }) => {
             const checked =
               value === 'auto'
@@ -48,7 +48,7 @@ export function QualityMenu() {
                   select(e.nativeEvent)
                   setOpen(false)
                 }}
-                className={`flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left font-mono text-xs hover:bg-white/10 ${
+                className={`flex cursor-pointer items-center justify-between gap-3 px-2.5 py-2 text-left font-mono text-xs hover:bg-white/10 ${
                   checked ? 'text-accent' : 'text-white'
                 }`}
               >

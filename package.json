@@ -1,20 +1,21 @@
 {
   "name": "tvp-sport-player",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
     "format": "biome format --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:chromium": "tsc --noEmit && vite build"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "5.2.8",
     "@fontsource/jetbrains-mono": "5.2.8",
+    "@phosphor-icons/react": "2.1.10",
     "@vidstack/react": "1.15.6",
+    "cnfast": "0.0.8",
     "hls.js": "1.6.16",
-    "lucide-react": "1.23.0",
     "react": "19.2.7",
     "react-dom": "19.2.7"
   },

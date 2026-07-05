@@ -1,4 +1,5 @@
-import { RotateCcw, Settings } from 'lucide-react'
+import { ArrowCounterClockwiseIcon, GearSixIcon } from '@phosphor-icons/react'
+import { cn } from 'cnfast'
 import { useEffect, useRef, useState } from 'react'
 import {
   DEFAULT_SETTINGS,
@@ -6,6 +7,7 @@ import {
   type QualityMode,
   type Theme,
 } from '../../../shared/settings'
+import { MenuHeader } from './MenuHeader'
 
 function Row({
   label,
@@ -45,14 +47,16 @@ function Toggle({
       role="switch"
       aria-checked={on}
       onClick={() => onChange(!on)}
-      className={`flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors ${
-        on ? 'bg-accent' : 'bg-white/20'
-      }`}
+      className={cn(
+        'flex h-5 w-9 shrink-0 items-center p-0.5 transition-colors',
+        on ? 'bg-accent' : 'bg-white/20',
+      )}
     >
       <span
-        className={`size-4 rounded-full bg-white shadow transition-transform ${
-          on ? 'translate-x-4' : 'translate-x-0'
-        }`}
+        className={cn(
+          'size-4 bg-white shadow transition-transform',
+          on ? 'translate-x-4' : 'translate-x-0',
+        )}
       />
     </button>
   )
@@ -68,17 +72,18 @@ function Segment<T extends string>({
   onChange: (v: T) => void
 }) {
   return (
-    <div className="flex w-full overflow-hidden rounded-lg border border-line">
+    <div className="flex w-full overflow-hidden border border-line">
       {options.map(([val, label]) => (
         <button
           key={val}
           type="button"
           onClick={() => onChange(val)}
-          className={`flex-1 px-2 py-1.5 font-mono text-[11px] transition-colors ${
+          className={cn(
+            'flex-1 px-2 py-1.5 font-mono text-[11px]',
             value === val
               ? 'bg-accent text-accent-ink'
-              : 'text-muted hover:bg-hoverbg hover:text-fg'
-          }`}
+              : 'text-muted hover:bg-hoverbg hover:text-fg',
+          )}
         >
           {label}
         </button>
@@ -133,18 +138,17 @@ export function SettingsMenu({
         title="Ustawienia"
         aria-label="Ustawienia"
         onClick={() => setOpen((v) => !v)}
-        className={`flex size-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-hoverbg hover:text-fg ${
-          open ? 'bg-hoverbg text-fg' : ''
-        }`}
+        className={cn(
+          'flex size-9 items-center justify-center text-muted hover:bg-hoverbg hover:text-fg',
+          open && 'bg-hoverbg text-fg',
+        )}
       >
-        <Settings size={18} />
+        <GearSixIcon className="size-4.5" />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-75 overflow-hidden rounded-2xl border border-line bg-card py-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
-          <div className="px-3 pb-1.5 pt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-            Ustawienia
-          </div>
+        <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-75 overflow-hidden border border-line bg-card pb-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+          <MenuHeader title="Ustawienia" />
           <Row
             label="Głośność domyślna"
             hint="Poziom głośności, z jakim zaczynają nowe okna odtwarzacza."
@@ -243,9 +247,9 @@ export function SettingsMenu({
             <button
               type="button"
               onClick={() => update(DEFAULT_SETTINGS)}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border border-line py-2 text-[13px] text-muted transition-colors hover:bg-hoverbg hover:text-fg"
+              className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:bg-hoverbg hover:text-fg"
             >
-              <RotateCcw size={14} />
+              <ArrowCounterClockwiseIcon className="size-3.5" />
               Resetuj ustawienia
             </button>
           </div>

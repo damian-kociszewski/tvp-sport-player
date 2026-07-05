@@ -35,7 +35,7 @@ export function ErrorOverlay({
       {error !== 'network' && sourceUrl && (
         <a
           href={sourceUrl}
-          className="mt-2 rounded-lg border border-line bg-card px-3.5 py-2 font-mono text-xs text-fg transition-colors hover:border-accent"
+          className="mt-2 border border-line bg-card px-3.5 py-2 font-mono text-xs text-fg hover:border-accent"
         >
           Otwórz stronę transmisji TVP Sport™
         </a>

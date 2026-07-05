@@ -1,15 +1,14 @@
 import { useEffect, useRef } from 'react'
 import type { PlayerSettings, Theme } from '../shared/settings'
-import { VideoStage } from './components/player/VideoStage'
 import { Footer } from './components/core/Footer'
 import { Navbar } from './components/core/Navbar'
-import { StreamInfo } from './components/player/StreamInfo'
+import { VideoStage } from './components/player/VideoStage'
 import { usePayload } from './usePayload'
 import { useSettings } from './useSettings'
 
 function MissingPayload() {
   return (
-    <div className="stage-stripes relative flex aspect-video w-full flex-col items-center justify-center gap-2.5 overflow-hidden rounded-2xl border border-line px-6 text-center">
+    <div className="stage-stripes relative flex aspect-video w-full flex-col items-center justify-center gap-2.5 overflow-hidden border border-line px-6 text-center">
       <div className="text-lg font-bold tracking-[-0.01em] text-white/85">
         Brak danych transmisji
       </div>
@@ -50,7 +49,7 @@ export function App() {
       <Navbar settings={settings} update={update} />
 
       <main className="flex flex-1 flex-col items-center justify-start p-[clamp(16px,2vw,40px)]">
-        <div className="flex w-[min(1200px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-3.5">
+        <div className="flex w-[min(1200px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-4">
           {state.status === 'missing' && <MissingPayload />}
           {state.status === 'ready' && initialSettings.current && (
             <>
@@ -58,7 +57,6 @@ export function App() {
                 payload={state.payload}
                 settings={initialSettings.current}
               />
-              <StreamInfo payload={state.payload} />
             </>
           )}
         </div>

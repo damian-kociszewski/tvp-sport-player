@@ -1,4 +1,13 @@
 import {
+  ArrowClockwiseIcon,
+  ArrowCounterClockwiseIcon,
+  ArrowsInIcon,
+  ArrowsOutIcon,
+  PauseIcon,
+  PictureInPictureIcon,
+  PlayIcon,
+} from '@phosphor-icons/react'
+import {
   Controls,
   FullscreenButton,
   PIPButton,
@@ -6,15 +15,6 @@ import {
   useMediaPlayer,
   useMediaState,
 } from '@vidstack/react'
-import {
-  Maximize,
-  Minimize,
-  Pause,
-  PictureInPicture2,
-  Play,
-  RotateCcw,
-  RotateCw,
-} from 'lucide-react'
 import { LiveButton } from './LiveButton'
 import { QualityMenu } from './QualityMenu'
 import { SeekBar } from './SeekBar'
@@ -23,20 +23,24 @@ import { AudioMenu, CaptionsMenu } from './TrackMenu'
 import { VolumeControl } from './VolumeControl'
 
 const iconButton =
-  'flex size-9 items-center justify-center rounded-lg text-white hover:bg-white/12'
+  'flex size-9 items-center justify-center text-white hover:bg-white/12'
 
 function PlayPauseIcon() {
   const paused = useMediaState('paused')
   return paused ? (
-    <Play size={18} fill="currentColor" />
+    <PlayIcon className="size-4.5" weight="fill" />
   ) : (
-    <Pause size={18} fill="currentColor" />
+    <PauseIcon className="size-4.5" weight="fill" />
   )
 }
 
 function FullscreenIcon() {
   const isFullscreen = useMediaState('fullscreen')
-  return isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />
+  return isFullscreen ? (
+    <ArrowsInIcon className="size-4.5" />
+  ) : (
+    <ArrowsOutIcon className="size-4.5" />
+  )
 }
 
 function SeekButton({ step, dir }: { step: number; dir: -1 | 1 }) {
@@ -53,7 +57,11 @@ function SeekButton({ step, dir }: { step: number; dir: -1 | 1 }) {
       }}
       className={iconButton}
     >
-      {dir < 0 ? <RotateCcw size={18} /> : <RotateCw size={18} />}
+      {dir < 0 ? (
+        <ArrowCounterClockwiseIcon className="size-4.5" />
+      ) : (
+        <ArrowClockwiseIcon className="size-4.5" />
+      )}
     </button>
   )
 }
@@ -63,7 +71,7 @@ export function ControlBar({ seekStep }: { seekStep: number }) {
   const live = useMediaState('live')
 
   return (
-    <Controls.Root className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-linear-to-t from-black/75 to-transparent px-3.5 pb-3 pt-10 opacity-0 transition-opacity data-visible:opacity-100">
+    <Controls.Root className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-linear-to-t from-black/75 to-transparent px-3.5 pb-3 pt-10 opacity-0 data-visible:opacity-100">
       {!live && (
         <Controls.Group className="flex w-full">
           <SeekBar />
@@ -89,7 +97,7 @@ export function ControlBar({ seekStep }: { seekStep: number }) {
 
         {canPip && (
           <PIPButton title="Obraz w obrazie (I)" className={iconButton}>
-            <PictureInPicture2 size={18} />
+            <PictureInPictureIcon className="size-4.5" />
           </PIPButton>
         )}
 

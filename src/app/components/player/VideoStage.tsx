@@ -17,6 +17,7 @@ import { CenterPlayButton } from './CenterPlayButton'
 import { ControlBar } from './ControlBar'
 import { ErrorOverlay, type PlayerError } from './ErrorOverlay'
 import { PlaybackLogger } from './PlaybackLogger'
+import { StreamInfo } from './StreamInfo'
 
 function onProviderChange(provider: MediaProviderAdapter | null) {
   if (isHLSProvider(provider)) {
@@ -71,7 +72,7 @@ function VolumeMemory() {
     }
     const id = setTimeout(
       () => void saveSettings({ defaultVolume: volume, startMuted: muted }),
-      400,
+      300,
     )
     return () => clearTimeout(id)
   }, [volume, muted])
@@ -101,34 +102,38 @@ export function VideoStage({
   }
 
   return (
-    <MediaPlayer
-      className="group relative aspect-video w-full overflow-hidden border border-line bg-[#0c0b0a] font-sans"
-      src={{ src: payload.src, type: 'application/x-mpegurl' }}
-      title={payload.title}
-      artwork={[]}
-      autoPlay={settings.autoplay}
-      volume={settings.defaultVolume}
-      muted={settings.startMuted}
-      keyTarget="document"
-      keyShortcuts={{
-        togglePaused: 'k Space',
-        toggleMuted: 'm',
-        toggleFullscreen: 'f',
-        togglePictureInPicture: 'i',
-        volumeUp: 'ArrowUp',
-        volumeDown: 'ArrowDown',
-      }}
-      onProviderChange={onProviderChange}
-      onHlsError={onHlsError}
-    >
-      <MediaProvider />
-      <PlaybackLogger />
-      <SeekKeys step={settings.seekStep} />
-      <QualityStrategy mode={settings.qualityMode} />
-      {settings.rememberVolume && <VolumeMemory />}
-      <CenterPlayButton />
-      <ControlBar seekStep={settings.seekStep} />
-      {error && <ErrorOverlay error={error} sourceUrl={payload.sourceUrl} />}
-    </MediaPlayer>
+    <>
+      <MediaPlayer
+        className="group relative aspect-video w-full overflow-hidden border border-line bg-[#0c0b0a] font-sans"
+        src={{ src: payload.src, type: 'application/x-mpegurl' }}
+        title={payload.title}
+        artwork={[]}
+        autoPlay={settings.autoplay}
+        volume={settings.defaultVolume}
+        muted={settings.startMuted}
+        keyTarget="document"
+        keyShortcuts={{
+          togglePaused: 'k Space',
+          toggleMuted: 'm',
+          toggleFullscreen: 'f',
+          togglePictureInPicture: 'i',
+          volumeUp: 'ArrowUp',
+          volumeDown: 'ArrowDown',
+        }}
+        onProviderChange={onProviderChange}
+        onHlsError={onHlsError}
+      >
+        <MediaProvider />
+        <PlaybackLogger />
+        <SeekKeys step={settings.seekStep} />
+        <QualityStrategy mode={settings.qualityMode} />
+        {settings.rememberVolume && <VolumeMemory />}
+        <CenterPlayButton />
+        <ControlBar seekStep={settings.seekStep} />
+        {error && <ErrorOverlay error={error} sourceUrl={payload.sourceUrl} />}
+      </MediaPlayer>
+
+      <StreamInfo payload={payload} />
+    </>
   )
 }

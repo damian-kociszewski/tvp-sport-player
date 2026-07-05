@@ -5,5 +5,7 @@ export function LogoMark({ className = 'size-5' }: { className?: string }) {
 }
 
 export function LogoWordmark() {
-  return <span className="whitespace-nowrap">Odtwarzacz dla TVP SPORT™</span>
+  return (
+    <span className="block whitespace-nowrap">Odtwarzacz dla TVP SPORT™</span>
+  )
 }

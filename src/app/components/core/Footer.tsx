@@ -1,4 +1,8 @@
-import { CodeXml, HandCoins, IdCard } from 'lucide-react'
+import {
+  CodeIcon,
+  HandCoinsIcon,
+  IdentificationCardIcon,
+} from '@phosphor-icons/react'
 import { version as APP_VERSION } from '../../../../package.json'
 import { LogoMark, LogoWordmark } from '../shared/Logo'
 
@@ -7,7 +11,7 @@ export function Footer() {
     <footer className="border-t border-line px-[clamp(16px,3vw,32px)] py-7">
       <div className="mx-auto flex w-full max-w-300 flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex max-w-140 flex-col gap-2.5">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <LogoMark className="size-5" />
             <span className="text-[13px] font-bold tracking-[0.04em]">
               <LogoWordmark />
@@ -25,11 +29,11 @@ export function Footer() {
             wygodnego oglądania publicznie dostępnych transmisji.
           </p>
           <p className="m-0 text-xs leading-relaxed text-muted">
-            Rozszerzenie nie zbiera ani nie wysyła żadnych danych — wszystko
+            Rozszerzenie nie zbiera ani nie wysyła żadnych danych - wszystko
             pozostaje w Twojej przeglądarce.
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] text-muted">
-            <span>v{APP_VERSION}</span>
+            <span>Wersja {APP_VERSION}</span>
             <span aria-hidden>·</span>
             <span>Licencja MIT</span>
             <span aria-hidden>·</span>
@@ -37,7 +41,7 @@ export function Footer() {
               href="https://github.com/damian-kociszewski/tvp-sport-player/issues"
               target="_blank"
               rel="noreferrer"
-              className="transition-colors hover:text-fg"
+              className="hover:text-fg"
             >
               Zgłoś problem
             </a>
@@ -49,30 +53,30 @@ export function Footer() {
             target="_blank"
             rel="noreferrer"
             title="Moja strona"
-            className="flex items-center text-muted transition-colors hover:text-white"
+            className="flex items-center text-muted hover:text-white"
           >
             <span className="sr-only">Moja strona</span>
-            <IdCard size={18} />
+            <IdentificationCardIcon className="size-5" />
           </a>
           <a
             href="https://buymeacoffee.com/kociszewski"
             target="_blank"
             rel="noreferrer"
             title="Postaw mi kawę"
-            className="flex items-center text-muted transition-colors hover:text-white"
+            className="flex items-center text-muted hover:text-white"
           >
             <span className="sr-only">Postaw mi kawę</span>
-            <HandCoins size={18} />
+            <HandCoinsIcon className="size-5" />
           </a>
           <a
             href="https://github.com/damian-kociszewski/tvp-sport-player"
             target="_blank"
             rel="noreferrer"
             title="Kod źródłowy"
-            className="flex items-center text-muted transition-colors hover:text-white"
+            className="flex items-center text-muted hover:text-white"
           >
             <span className="sr-only">Kod źródłowy</span>
-            <CodeXml size={18} />
+            <CodeIcon className="size-5" />
           </a>
         </div>
       </div>

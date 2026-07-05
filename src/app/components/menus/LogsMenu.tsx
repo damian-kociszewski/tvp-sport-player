@@ -1,4 +1,5 @@
-import { ScrollText, Trash2 } from 'lucide-react'
+import { ScrollIcon, TrashIcon } from '@phosphor-icons/react'
+import { cn } from 'cnfast'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   clearLogs,
@@ -6,6 +7,7 @@ import {
   LOGS_KEY,
   type LogEntry,
 } from '../../../shared/logger'
+import { MenuHeader } from './MenuHeader'
 
 const LEVEL_COLOR: Record<LogEntry['level'], string> = {
   info: 'text-muted',
@@ -64,24 +66,22 @@ export function LogsMenu() {
         title="Logi"
         aria-label="Logi"
         onClick={() => setOpen((v) => !v)}
-        className={`flex size-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-hoverbg hover:text-fg ${
-          open ? 'bg-hoverbg text-fg' : ''
-        }`}
+        className={cn(
+          'flex size-9 items-center justify-center text-muted hover:bg-hoverbg hover:text-fg',
+          open && 'bg-hoverbg text-fg',
+        )}
       >
-        <ScrollText size={18} />
+        <ScrollIcon className="size-4.5" />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-40 flex max-h-[70vh] w-[440px] flex-col overflow-hidden rounded-2xl border border-line bg-card shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
-          <div className="flex items-center justify-between gap-2 border-line border-b px-3 py-2">
-            <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-              Logi ({logs.length})
-            </span>
+        <div className="absolute right-0 top-[calc(100%+8px)] z-40 flex max-h-[70vh] w-110 flex-col overflow-hidden border border-line bg-card shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+          <MenuHeader title={`Logi (${logs.length})`}>
             <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={copy}
-                className="rounded-md px-2 py-1 font-mono text-[11px] text-muted transition-colors hover:bg-hoverbg hover:text-fg"
+                className="px-2 py-1 font-mono text-[11px] text-muted hover:bg-hoverbg hover:text-fg"
               >
                 Kopiuj
               </button>
@@ -91,12 +91,12 @@ export function LogsMenu() {
                 onClick={() => {
                   void clearLogs().then(refresh)
                 }}
-                className="flex size-7 items-center justify-center rounded-md text-muted transition-colors hover:bg-hoverbg hover:text-live"
+                className="flex size-7 items-center justify-center text-muted hover:bg-hoverbg hover:text-live"
               >
-                <Trash2 size={14} />
+                <TrashIcon className="size-3.5" />
               </button>
             </div>
-          </div>
+          </MenuHeader>
 
           <div className="overflow-x-hidden overflow-y-auto px-3 py-2 font-mono text-[11px] leading-relaxed">
             {logs.length === 0 ? (
@@ -108,7 +108,10 @@ export function LogsMenu() {
                   <span className="shrink-0 text-muted/70">{time(l.ts)}</span>
                   <span className="shrink-0 text-muted/70">[{l.scope}]</span>
                   <span
-                    className={`min-w-0 flex-1 wrap-anywhere ${LEVEL_COLOR[l.level]}`}
+                    className={cn(
+                      'min-w-0 flex-1 wrap-anywhere',
+                      LEVEL_COLOR[l.level],
+                    )}
                   >
                     {l.msg}
                   </span>

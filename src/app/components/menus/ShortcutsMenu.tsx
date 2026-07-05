@@ -1,13 +1,17 @@
 import {
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  Keyboard,
-} from 'lucide-react'
+  ArrowDownIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+  KeyboardIcon,
+} from '@phosphor-icons/react'
+import { cn } from 'cnfast'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
+import { MenuHeader } from './MenuHeader'
 
-const arrow = (Icon: typeof ArrowLeft) => <Icon size={13} strokeWidth={2.5} />
+const arrow = (Icon: typeof ArrowLeftIcon) => (
+  <Icon className="size-3.25" weight="bold" />
+)
 
 const SHORTCUTS: { label: string; keys: ReactNode[]; combo?: boolean }[] = [
   { label: 'Odtwórz / pauza', keys: ['Spacja', 'K'] },
@@ -16,14 +20,14 @@ const SHORTCUTS: { label: string; keys: ReactNode[]; combo?: boolean }[] = [
   { label: 'Obraz w obrazie', keys: ['I'] },
   {
     label: 'Przewiń w tył / w przód',
-    keys: [arrow(ArrowLeft), arrow(ArrowRight)],
+    keys: [arrow(ArrowLeftIcon), arrow(ArrowRightIcon)],
   },
-  { label: 'Głośność', keys: [arrow(ArrowUp), arrow(ArrowDown)] },
+  { label: 'Głośność', keys: [arrow(ArrowUpIcon), arrow(ArrowDownIcon)] },
 ]
 
 function Kbd({ children }: { children: ReactNode }) {
   return (
-    <kbd className="flex h-5 min-w-5 items-center justify-center rounded-md border border-line bg-hoverbg px-1.5 font-mono text-[11px] text-fg">
+    <kbd className="flex h-5 min-w-5 items-center justify-center border border-line bg-hoverbg px-1.5 font-mono text-[11px] text-fg">
       {children}
     </kbd>
   )
@@ -49,18 +53,17 @@ export function ShortcutsMenu() {
         title="Skróty klawiszowe"
         aria-label="Skróty klawiszowe"
         onClick={() => setOpen((v) => !v)}
-        className={`flex size-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-hoverbg hover:text-fg ${
-          open ? 'bg-hoverbg text-fg' : ''
-        }`}
+        className={cn(
+          'flex size-9 items-center justify-center text-muted hover:bg-hoverbg hover:text-fg',
+          open && 'bg-hoverbg text-fg',
+        )}
       >
-        <Keyboard size={18} />
+        <KeyboardIcon className="size-4.5" />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-72 overflow-hidden rounded-2xl border border-line bg-card py-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
-          <div className="px-3 pb-1.5 pt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-            Skróty klawiszowe
-          </div>
+        <div className="absolute right-0 top-[calc(100%+8px)] z-40 w-72 overflow-hidden border border-line bg-card pb-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+          <MenuHeader title="Skróty klawiszowe" />
           {SHORTCUTS.map((s) => (
             <div
               key={s.label}
