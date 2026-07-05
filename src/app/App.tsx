@@ -58,7 +58,7 @@ export function App() {
   return (
     <div
       id="tvp-app"
-      className="flex min-h-dvh flex-col bg-bg font-sans text-fg"
+      className="flex min-h-dvh flex-col bg-bg font-sans text-fg scrollbar-gutter-stable"
     >
       <Navbar settings={settings} update={update} />
 

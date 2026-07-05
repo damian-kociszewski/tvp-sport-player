@@ -156,130 +156,132 @@ export function SettingsMenu({
       {open && (
         <div
           id="tvp-settings-panel"
-          className="absolute right-0 top-[calc(100%+8px)] z-40 w-80 overflow-hidden border border-line bg-card pb-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+          className="absolute right-0 top-[calc(100%+8px)] z-40 flex max-h-[60vh] w-80 flex-col overflow-hidden border border-line bg-card shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
         >
           <MenuHeader title="Ustawienia" />
-          <Row
-            label="Głośność domyślna"
-            hint="Poziom głośności, z jakim zaczynają nowe okna odtwarzacza."
-          >
-            <div className="flex items-center gap-1">
-              <input
-                type="range"
-                min={0}
-                max={200}
-                value={Math.round(settings.defaultVolume * 200)}
-                onChange={(e) =>
-                  update({ defaultVolume: Number(e.target.value) / 200 })
-                }
-                className="settings-range w-25 cursor-pointer outline-none"
-                style={{
-                  ['--fill' as string]: `${settings.defaultVolume * 100}%`,
-                }}
+          <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+            <Row
+              label="Głośność domyślna"
+              hint="Poziom głośności, z jakim zaczynają nowe okna odtwarzacza."
+            >
+              <div className="flex items-center gap-1">
+                <input
+                  type="range"
+                  min={0}
+                  max={200}
+                  value={Math.round(settings.defaultVolume * 200)}
+                  onChange={(e) =>
+                    update({ defaultVolume: Number(e.target.value) / 200 })
+                  }
+                  className="settings-range w-25 cursor-pointer outline-none"
+                  style={{
+                    ['--fill' as string]: `${settings.defaultVolume * 100}%`,
+                  }}
+                />
+                <span className="w-10 text-right font-mono text-[11px] text-muted">
+                  {(settings.defaultVolume * 100).toFixed(1)}
+                </span>
+              </div>
+            </Row>
+
+            <Row
+              label="Rozpoczynij wyciszony"
+              hint="Nowe okna zaczynają odtwarzanie bez dźwięku."
+            >
+              <Toggle
+                on={settings.startMuted}
+                onChange={(v) => update({ startMuted: v })}
               />
-              <span className="w-10 text-right font-mono text-[11px] text-muted">
-                {(settings.defaultVolume * 100).toFixed(1)}
-              </span>
+            </Row>
+
+            <Row
+              label="Zapamiętaj głośność"
+              hint="Zmiana głośności w odtwarzaczu staje się domyślną głośnością dla kolejnych okien."
+            >
+              <Toggle
+                on={settings.rememberVolume}
+                onChange={(v) => update({ rememberVolume: v })}
+              />
+            </Row>
+
+            <Row
+              label="Autoodtwarzanie"
+              hint="Nowe okna od razu rozpoczynają odtwarzanie transmisji."
+            >
+              <Toggle
+                on={settings.autoplay}
+                onChange={(v) => update({ autoplay: v })}
+              />
+            </Row>
+
+            <Row
+              label="Otwieraj automatycznie"
+              hint="Otwórz odtwarzacz od razu po znalezieniu strumienia na stronie."
+            >
+              <Toggle
+                on={settings.autoOpen}
+                onChange={(v) => update({ autoOpen: v })}
+              />
+            </Row>
+
+            <Row
+              label="Przewijanie"
+              hint="O ile sekund przewijają strzałki ← / →."
+              stack
+            >
+              <Segment
+                value={String(settings.seekStep)}
+                options={SEEK_OPTIONS}
+                onChange={(v) => update({ seekStep: Number(v) })}
+              />
+            </Row>
+
+            <Row label="Jakość" hint="Domyślny wybór jakości transmisji." stack>
+              <Segment
+                value={settings.qualityMode}
+                options={QUALITY_OPTIONS}
+                onChange={(v) => update({ qualityMode: v })}
+              />
+            </Row>
+
+            <Row label="Motyw" hint="Wygląd interfejsu odtwarzacza." stack>
+              <Segment
+                value={settings.theme}
+                options={THEME_OPTIONS}
+                onChange={(v) => update({ theme: v })}
+              />
+            </Row>
+
+            <Row
+              label="Własny CSS"
+              hint="Dodatkowe reguły CSS wstrzykiwane do odtwarzacza."
+              stack
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false)
+                  setCssOpen(true)
+                }}
+                className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:bg-hoverbg hover:text-fg"
+              >
+                <BracketsCurlyIcon className="size-3.5" />
+                Edytuj CSS
+              </button>
+            </Row>
+
+            <div className="mx-3 my-1 border-t border-line" />
+
+            <div className="px-3 py-2">
+              <button
+                type="button"
+                onClick={() => update(DEFAULT_SETTINGS)}
+                className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:bg-hoverbg hover:text-live"
+              >
+                <ArrowCounterClockwiseIcon className="size-3.5" />
+                Resetuj ustawienia
+              </button>
             </div>
-          </Row>
-
-          <Row
-            label="Rozpoczynij wyciszony"
-            hint="Nowe okna zaczynają odtwarzanie bez dźwięku."
-          >
-            <Toggle
-              on={settings.startMuted}
-              onChange={(v) => update({ startMuted: v })}
-            />
-          </Row>
-
-          <Row
-            label="Zapamiętaj głośność"
-            hint="Zmiana głośności w odtwarzaczu staje się domyślną głośnością dla kolejnych okien."
-          >
-            <Toggle
-              on={settings.rememberVolume}
-              onChange={(v) => update({ rememberVolume: v })}
-            />
-          </Row>
-
-          <Row
-            label="Autoodtwarzanie"
-            hint="Nowe okna od razu rozpoczynają odtwarzanie transmisji."
-          >
-            <Toggle
-              on={settings.autoplay}
-              onChange={(v) => update({ autoplay: v })}
-            />
-          </Row>
-
-          <Row
-            label="Otwieraj automatycznie"
-            hint="Otwórz odtwarzacz od razu po znalezieniu strumienia na stronie."
-          >
-            <Toggle
-              on={settings.autoOpen}
-              onChange={(v) => update({ autoOpen: v })}
-            />
-          </Row>
-
-          <Row
-            label="Przewijanie"
-            hint="O ile sekund przewijają strzałki ← / →."
-            stack
-          >
-            <Segment
-              value={String(settings.seekStep)}
-              options={SEEK_OPTIONS}
-              onChange={(v) => update({ seekStep: Number(v) })}
-            />
-          </Row>
-
-          <Row label="Jakość" hint="Domyślny wybór jakości transmisji." stack>
-            <Segment
-              value={settings.qualityMode}
-              options={QUALITY_OPTIONS}
-              onChange={(v) => update({ qualityMode: v })}
-            />
-          </Row>
-
-          <Row label="Motyw" hint="Wygląd interfejsu odtwarzacza." stack>
-            <Segment
-              value={settings.theme}
-              options={THEME_OPTIONS}
-              onChange={(v) => update({ theme: v })}
-            />
-          </Row>
-
-          <Row
-            label="Własny CSS"
-            hint="Dodatkowe reguły CSS wstrzykiwane do odtwarzacza."
-            stack
-          >
-            <button
-              type="button"
-              onClick={() => {
-                setOpen(false)
-                setCssOpen(true)
-              }}
-              className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:bg-hoverbg hover:text-fg"
-            >
-              <BracketsCurlyIcon className="size-3.5" />
-              Edytuj CSS
-            </button>
-          </Row>
-
-          <div className="mx-3 my-1 border-t border-line" />
-
-          <div className="px-3 py-1.5">
-            <button
-              type="button"
-              onClick={() => update(DEFAULT_SETTINGS)}
-              className="flex w-full items-center justify-center gap-2 border border-line py-2 text-[13px] text-muted hover:border-live/40 hover:bg-hoverbg hover:text-live"
-            >
-              <ArrowCounterClockwiseIcon className="size-3.5" />
-              Resetuj ustawienia
-            </button>
           </div>
         </div>
       )}

@@ -78,7 +78,7 @@ export function LogsMenu() {
       {open && (
         <div
           id="tvp-logs-panel"
-          className="absolute right-0 top-[calc(100%+8px)] z-40 flex max-h-[70vh] w-110 flex-col overflow-hidden border border-line bg-card shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+          className="absolute right-0 top-[calc(100%+8px)] z-40 flex max-h-[60vh] w-120 flex-col overflow-hidden border border-line bg-card shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
         >
           <MenuHeader title={`Logi (${logs.length})`}>
             <div className="flex items-center gap-1">
