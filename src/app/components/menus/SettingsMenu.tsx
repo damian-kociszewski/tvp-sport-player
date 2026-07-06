@@ -31,9 +31,7 @@ function Row({
         <span className="text-[13px] font-medium">{label}</span>
         {!stack && children}
       </div>
-      <p className="mt-1 max-w-60 text-[11px] leading-snug text-muted">
-        {hint}
-      </p>
+      <p className="mt-1 text-[11px] leading-snug text-muted">{hint}</p>
       {stack && <div className="mt-2">{children}</div>}
     </div>
   )

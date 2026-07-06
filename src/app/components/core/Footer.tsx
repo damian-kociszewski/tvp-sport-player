@@ -1,8 +1,4 @@
-import {
-  CodeIcon,
-  HandCoinsIcon,
-  IdentificationCardIcon,
-} from '@phosphor-icons/react'
+import { CodeIcon, HandCoinsIcon, GlobeIcon } from '@phosphor-icons/react'
 import { version as APP_VERSION } from '../../../../package.json'
 import { LogoMark, LogoWordmark } from '../shared/Logo'
 
@@ -63,7 +59,7 @@ export function Footer() {
             className="flex items-center text-muted hover:text-white"
           >
             <span className="sr-only">Moja strona</span>
-            <IdentificationCardIcon className="size-5" />
+            <GlobeIcon className="size-5" />
           </a>
           <a
             id="tvp-link-coffee"

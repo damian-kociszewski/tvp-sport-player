@@ -21,7 +21,7 @@ export const DEFAULT_SETTINGS: PlayerSettings = {
   autoplay: true,
   rememberVolume: true,
   seekStep: 15,
-  autoOpen: false,
+  autoOpen: true,
   customCss: '',
 }
 
