@@ -1,6 +1,6 @@
 import { Time, useMediaState } from '@vidstack/react'
 
-export function TimeDisplay() {
+export const TimeDisplay = () => {
   const start = useMediaState('seekableStart')
   const end = useMediaState('seekableEnd')
   if (end - start < 5) return null

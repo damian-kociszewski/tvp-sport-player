@@ -1,8 +1,8 @@
 import { useMediaState } from '@vidstack/react'
 import { useEffect, useRef } from 'react'
-import { logger } from '../../../shared/logger'
+import { logger } from '@/shared/logger'
 
-function useTransition<T>(value: T, log: (v: T) => void) {
+const useTransition = <T,>(value: T, log: (v: T) => void) => {
   const prev = useRef(value)
   const primed = useRef(false)
   useEffect(() => {
@@ -18,7 +18,7 @@ function useTransition<T>(value: T, log: (v: T) => void) {
   }, [value, log])
 }
 
-export function PlaybackLogger() {
+export const PlaybackLogger = () => {
   const paused = useMediaState('paused')
   const muted = useMediaState('muted')
   const volume = useMediaState('volume')
@@ -32,42 +32,34 @@ export function PlaybackLogger() {
   const textTrack = useMediaState('textTrack')
   const audioTrack = useMediaState('audioTrack')
 
-  useTransition(paused, (v) =>
-    logger.info('player', v ? 'pauza' : 'odtwarzanie'),
-  )
-  useTransition(muted, (v) =>
-    logger.info('player', v ? 'wyciszono' : 'wyłączono wyciszenie'),
-  )
+  useTransition(paused, (v) => logger.info('player', v ? 'paused' : 'playing'))
+  useTransition(muted, (v) => logger.info('player', v ? 'muted' : 'unmuted'))
   useTransition(fullscreen, (v) =>
-    logger.info('player', v ? 'pełny ekran włączony' : 'pełny ekran wyłączony'),
+    logger.info('player', v ? 'fullscreen on' : 'fullscreen off'),
   )
   useTransition(pip, (v) =>
     logger.info(
       'player',
-      v ? 'obraz w obrazie włączony' : 'obraz w obrazie wyłączony',
+      v ? 'picture-in-picture on' : 'picture-in-picture off',
     ),
   )
   useTransition(quality ? `${quality.height}p` : 'auto', (v) =>
-    logger.info('player', `jakość: ${v}`),
+    logger.info('player', `quality: ${v}`),
   )
   useTransition(canPlay, (v) => {
-    if (v) logger.info('player', 'gotowy do odtwarzania')
+    if (v) logger.info('player', 'ready to play')
   })
   useTransition(ended, (v) => {
-    if (v) logger.info('player', 'transmisja zakończona')
+    if (v) logger.info('player', 'stream ended')
   })
   useTransition(textTrack?.label ?? '—', (v) =>
-    logger.info('player', `napisy: ${v}`),
+    logger.info('player', `captions: ${v}`),
   )
   useTransition(audioTrack?.label ?? '—', (v) =>
-    logger.info('player', `ścieżka audio: ${v}`),
+    logger.info('player', `audio track: ${v}`),
   )
   useTransition(live && liveEdge, (v) => {
-    if (live)
-      logger.info(
-        'player',
-        v ? 'na żywo (krawędź)' : 'opóźnienie względem live',
-      )
+    if (live) logger.info('player', v ? 'at live edge' : 'behind live edge')
   })
 
   const volPct = Math.round(volume * 100)
@@ -82,7 +74,7 @@ export function PlaybackLogger() {
     const id = setTimeout(() => {
       if (volPct !== lastVol.current) {
         lastVol.current = volPct
-        logger.info('player', `głośność ${volPct}%`)
+        logger.info('player', `volume ${volPct}%`)
       }
     }, 400)
     return () => clearTimeout(id)

@@ -10,11 +10,11 @@ export interface LogEntry {
 export const LOGS_KEY = 'logs'
 const MAX_ENTRIES = 1000
 
-function hasStorage(): boolean {
+const hasStorage = (): boolean => {
   return typeof chrome !== 'undefined' && !!chrome.storage?.local
 }
 
-function format(args: unknown[]): string {
+const format = (args: unknown[]): string => {
   return args
     .map((a) => {
       if (typeof a === 'string') return a
@@ -29,7 +29,7 @@ function format(args: unknown[]): string {
 
 let chain: Promise<void> = Promise.resolve()
 
-function persist(entry: LogEntry): void {
+const persist = (entry: LogEntry): void => {
   if (!hasStorage()) return
   chain = chain
     .then(async () => {
@@ -44,7 +44,7 @@ function persist(entry: LogEntry): void {
     .catch(() => {})
 }
 
-function emit(level: LogLevel, scope: string, args: unknown[]): void {
+const emit = (level: LogLevel, scope: string, args: unknown[]): void => {
   persist({ ts: Date.now(), level, scope, msg: format(args) })
 }
 
@@ -54,7 +54,7 @@ export const logger = {
   error: (scope: string, ...args: unknown[]) => emit('error', scope, args),
 }
 
-export async function getLogs(): Promise<LogEntry[]> {
+export const getLogs = async (): Promise<LogEntry[]> => {
   if (!hasStorage()) return []
   return (
     ((await chrome.storage.local.get(LOGS_KEY))[LOGS_KEY] as
@@ -63,7 +63,7 @@ export async function getLogs(): Promise<LogEntry[]> {
   )
 }
 
-export async function clearLogs(): Promise<void> {
+export const clearLogs = async (): Promise<void> => {
   if (!hasStorage()) return
   await chrome.storage.local.remove(LOGS_KEY)
 }

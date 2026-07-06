@@ -1,7 +1,8 @@
-import { QuestionIcon } from '@phosphor-icons/react'
-import { cn } from 'cnfast'
-import { useEffect, useRef, useState } from 'react'
-import { MenuHeader } from './MenuHeader'
+import { BugIcon, QuestionIcon } from '@phosphor-icons/react'
+import { MenuHeader } from '@/app/components/menus/MenuHeader'
+import { NavMenu } from '@/app/components/menus/NavMenu'
+import { Button } from '@/app/components/ui/button'
+import { Separator } from '@/app/components/ui/separator'
 
 const FAQ: { q: string; a: string }[] = [
   {
@@ -22,53 +23,43 @@ const FAQ: { q: string; a: string }[] = [
   },
 ]
 
-export function FaqMenu() {
-  const [open, setOpen] = useState(false)
-  const rootRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    const close = (e: PointerEvent) => {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('pointerdown', close)
-    return () => document.removeEventListener('pointerdown', close)
-  }, [open])
-
+export const FaqMenu = () => {
   return (
-    <div ref={rootRef} className="relative">
-      <button
-        id="tvp-menu-faq"
-        type="button"
-        title="Pomoc (FAQ)"
-        aria-label="Pomoc (FAQ)"
-        onClick={() => setOpen((v) => !v)}
-        className={cn(
-          'flex size-9 items-center justify-center text-muted hover:bg-hoverbg hover:text-fg',
-          open && 'bg-hoverbg text-fg',
-        )}
-      >
-        <QuestionIcon className="size-4.5" />
-      </button>
-
-      {open && (
-        <div
-          id="tvp-faq-panel"
-          className="absolute right-0 top-[calc(100%+8px)] z-40 flex max-h-[70vh] w-85 flex-col overflow-hidden border border-line bg-card shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
-        >
-          <MenuHeader title="Najczęstsze pytania" />
-          <div className="overflow-y-auto pb-1.5">
-            {FAQ.map((item) => (
-              <div key={item.q} className="px-3 py-2">
-                <p className="text-[13px] font-medium">{item.q}</p>
-                <p className="mt-1 text-[11px] leading-snug text-muted">
-                  {item.a}
-                </p>
-              </div>
-            ))}
+    <NavMenu
+      id="tvp-menu-faq"
+      panelId="tvp-faq-panel"
+      label="Pomoc"
+      icon={<QuestionIcon className="size-4.5" />}
+    >
+      <MenuHeader title="Pomoc" />
+      <div className="overflow-y-auto py-1">
+        {FAQ.map((item) => (
+          <div key={item.q} className="px-3 py-2">
+            <p className="text-[13px] font-medium">{item.q}</p>
+            <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+              {item.a}
+            </p>
           </div>
+        ))}
+        <Separator className="mx-3 my-1 w-auto" />
+        <div className="px-3 py-2">
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="w-full text-[13px] text-muted-foreground hover:text-foreground"
+          >
+            <a
+              href="https://github.com/damian-kociszewski/tvp-sport-player/issues"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <BugIcon className="size-3.5" />
+              Zgłoś problem
+            </a>
+          </Button>
         </div>
-      )}
-    </div>
+      </div>
+    </NavMenu>
   )
 }

@@ -1,10 +1,10 @@
-import logoUrl from '../../../assets/logo.svg'
+import logoUrl from '@/assets/logo.svg'
 
-export function LogoMark({ className = 'size-5' }: { className?: string }) {
+export const LogoMark = ({ className = 'size-5' }: { className?: string }) => {
   return <img src={logoUrl} className={className} alt="" aria-hidden />
 }
 
-export function LogoWordmark() {
+export const LogoWordmark = () => {
   return (
     <span className="block whitespace-nowrap">Odtwarzacz dla TVP SPORT™</span>
   )

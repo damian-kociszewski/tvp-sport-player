@@ -5,8 +5,8 @@ import '@fontsource/jetbrains-mono/latin-500.css'
 import '@fontsource/jetbrains-mono/latin-ext-400.css'
 import '@fontsource/jetbrains-mono/latin-ext-500.css'
 import './main.css'
-import { logger } from '../shared/logger'
-import { App } from './App'
+import { App } from '@/app/App'
+import { logger } from '@/shared/logger'
 
 window.addEventListener('error', (e) =>
   logger.error('player', 'window error', e.message),
@@ -15,7 +15,7 @@ window.addEventListener('unhandledrejection', (e) =>
   logger.error('player', 'unhandled rejection', String(e.reason)),
 )
 
-logger.info('player', 'okno playera otwarte')
+logger.info('player', 'player window opened')
 
 const root = document.getElementById('root')
 if (root) createRoot(root).render(<App />)

@@ -15,17 +15,20 @@ import {
   useMediaPlayer,
   useMediaState,
 } from '@vidstack/react'
-import { LiveButton } from './LiveButton'
-import { QualityMenu } from './QualityMenu'
-import { SeekBar } from './SeekBar'
-import { TimeDisplay } from './TimeDisplay'
-import { AudioMenu, CaptionsMenu } from './TrackMenu'
-import { VolumeControl } from './VolumeControl'
+import { LiveButton } from '@/app/components/player/LiveButton'
+import {
+  AudioMenu,
+  CaptionsMenu,
+  QualityMenu,
+} from '@/app/components/player/PlayerMenu'
+import { SeekBar } from '@/app/components/player/SeekBar'
+import { TimeDisplay } from '@/app/components/player/TimeDisplay'
+import { VolumeControl } from '@/app/components/player/VolumeControl'
 
 const iconButton =
-  'flex size-9 items-center justify-center text-white hover:bg-white/12'
+  'flex size-9 cursor-pointer items-center justify-center text-white transition-all outline-none hover:bg-white/12 focus-visible:ring-[3px] focus-visible:ring-ring/50'
 
-function PlayPauseIcon() {
+const PlayPauseIcon = () => {
   const paused = useMediaState('paused')
   return paused ? (
     <PlayIcon className="size-4.5" weight="fill" />
@@ -34,7 +37,7 @@ function PlayPauseIcon() {
   )
 }
 
-function FullscreenIcon() {
+const FullscreenIcon = () => {
   const isFullscreen = useMediaState('fullscreen')
   return isFullscreen ? (
     <ArrowsInIcon className="size-4.5" />
@@ -43,9 +46,10 @@ function FullscreenIcon() {
   )
 }
 
-function SeekButton({ step, dir }: { step: number; dir: -1 | 1 }) {
+const SeekButton = ({ step, dir }: { step: number; dir: -1 | 1 }) => {
   const player = useMediaPlayer()
-  const label = dir < 0 ? `Cofnij o ${step} s` : `Przewiń o ${step} s do przodu`
+  const label =
+    dir < 0 ? `Przewiń o ${step}s do tyłu` : `Przewiń o ${step}s do przodu`
   return (
     <button
       id={dir < 0 ? 'tvp-btn-seek-back' : 'tvp-btn-seek-forward'}
@@ -67,14 +71,14 @@ function SeekButton({ step, dir }: { step: number; dir: -1 | 1 }) {
   )
 }
 
-export function ControlBar({ seekStep }: { seekStep: number }) {
+export const ControlBar = ({ seekStep }: { seekStep: number }) => {
   const canPip = useMediaState('canPictureInPicture')
   const live = useMediaState('live')
 
   return (
     <Controls.Root
       id="tvp-controls"
-      className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-linear-to-t from-black/75 to-transparent px-3.5 pb-3 pt-10 opacity-0 data-visible:opacity-100"
+      className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-linear-to-t from-black/75 to-transparent px-3.5 pb-3 pt-10 opacity-0 transition-opacity duration-200 data-visible:opacity-100"
     >
       {!live && (
         <Controls.Group id="tvp-controls-seek" className="flex w-full">

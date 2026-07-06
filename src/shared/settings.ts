@@ -1,5 +1,6 @@
 export type QualityMode = 'auto' | 'highest' | 'lowest'
 export type Theme = 'light' | 'dark' | 'system'
+export type ClickAction = 'playPause' | 'muteUnmute' | 'none'
 
 export interface PlayerSettings {
   theme: Theme
@@ -10,6 +11,7 @@ export interface PlayerSettings {
   rememberVolume: boolean
   seekStep: number
   autoOpen: boolean
+  clickAction: ClickAction
   customCss: string
 }
 
@@ -22,16 +24,17 @@ export const DEFAULT_SETTINGS: PlayerSettings = {
   rememberVolume: true,
   seekStep: 15,
   autoOpen: true,
+  clickAction: 'none',
   customCss: '',
 }
 
 const SETTINGS_KEY = 'settings'
 
-function hasStorage(): boolean {
+const hasStorage = (): boolean => {
   return typeof chrome !== 'undefined' && !!chrome.storage?.local
 }
 
-export async function loadSettings(): Promise<PlayerSettings> {
+export const loadSettings = async (): Promise<PlayerSettings> => {
   if (!hasStorage()) return { ...DEFAULT_SETTINGS }
   const stored = (await chrome.storage.local.get(SETTINGS_KEY))[SETTINGS_KEY]
   return {
@@ -40,9 +43,9 @@ export async function loadSettings(): Promise<PlayerSettings> {
   }
 }
 
-export async function saveSettings(
+export const saveSettings = async (
   patch: Partial<PlayerSettings>,
-): Promise<void> {
+): Promise<void> => {
   if (!hasStorage()) return
   const current = await loadSettings()
   await chrome.storage.local.set({ [SETTINGS_KEY]: { ...current, ...patch } })

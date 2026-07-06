@@ -1,12 +1,12 @@
 import { useMediaPlayer, useMediaState } from '@vidstack/react'
-import { cn } from 'cnfast'
+import { cn } from '@/lib/utils'
 
 const pill =
-  'ml-2 flex items-center gap-1.5 px-2.5 py-[5px] font-mono text-[11px] font-medium tracking-[0.08em]'
+  'ml-2 flex items-center gap-1.5 px-2.5 py-[5px] font-mono text-[11px] font-medium tracking-[0.08em] transition-all'
 
 const label = 'leading-none translate-y-[0.5px]'
 
-export function LiveButton() {
+export const LiveButton = () => {
   const live = useMediaState('live')
   const player = useMediaPlayer()
   const seekableEnd = useMediaState('seekableEnd')
@@ -27,7 +27,10 @@ export function LiveButton() {
       onClick={() => {
         if (player) player.currentTime = seekableEnd
       }}
-      className={cn(pill, 'bg-live text-white hover:opacity-90')}
+      className={cn(
+        pill,
+        'cursor-pointer bg-destructive text-white hover:opacity-90',
+      )}
     >
       <span className="size-1.5 bg-white" />
       <span className={label}>NA ŻYWO</span>

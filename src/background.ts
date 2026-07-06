@@ -1,14 +1,14 @@
-import { logger } from './shared/logger'
-import { loadSettings } from './shared/settings'
+import { logger } from '@/shared/logger'
+import { loadSettings } from '@/shared/settings'
 import {
   captureKey,
   playerKey,
   type StreamCapture,
   type StreamPayload,
-} from './shared/types'
+} from '@/shared/stream'
 
 const M3U8_RE = /\.m3u8($|\?)/i
-const COLLECT_WINDOW = 10_000
+const COLLECT_WINDOW_MS = 10_000
 
 interface Pending {
   urls: string[]
@@ -22,7 +22,7 @@ logger.info('bg', 'service worker start')
 
 const ICON_SIZES = [16, 32, 48, 96, 128, 256, 512, 1024]
 
-function iconSet(state: 'active' | 'inactive'): Record<number, string> {
+const iconSet = (state: 'active' | 'inactive'): Record<number, string> => {
   const set: Record<number, string> = {}
   for (const size of ICON_SIZES) set[size] = `icons/${state}/${size}.png`
   return set
@@ -31,7 +31,7 @@ function iconSet(state: 'active' | 'inactive'): Record<number, string> {
 const ACTIVE_ICON = iconSet('active')
 const INACTIVE_ICON = iconSet('inactive')
 
-function setIconState(active: boolean, tabId?: number) {
+const setIconState = (active: boolean, tabId?: number) => {
   const details: chrome.action.TabIconDetails = {
     path: active ? ACTIVE_ICON : INACTIVE_ICON,
   }
@@ -45,7 +45,7 @@ function setIconState(active: boolean, tabId?: number) {
   }
 }
 
-async function refreshIcon(tabId: number) {
+const refreshIcon = async (tabId: number) => {
   const key = captureKey(tabId)
   const has = !!(await chrome.storage.session.get(key))[key]
   setIconState(has, tabId)
@@ -102,7 +102,7 @@ void chrome.declarativeNetRequest.updateDynamicRules({
   ],
 })
 
-function rank(url: string): number {
+const rankStreamUrl = (url: string): number => {
   try {
     const name = (new URL(url).pathname.split('/').pop() ?? '').toLowerCase()
     return (name.includes('master') ? 0 : 1_000_000) + name.length
@@ -120,7 +120,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     seenUrls.set(tabId, seen)
     if (seen.has(url)) return undefined
     seen.add(url)
-    logger.info('bg', 'wykryto m3u8', tabId, url.slice(0, 90))
+    logger.info('bg', 'm3u8 detected', tabId, url.slice(0, 90))
 
     const entry = pending.get(tabId)
     if (entry) {
@@ -128,7 +128,10 @@ chrome.webRequest.onBeforeRequest.addListener(
     } else {
       pending.set(tabId, {
         urls: [url],
-        timer: setTimeout(() => void finalize(tabId), COLLECT_WINDOW),
+        timer: setTimeout(
+          () => void captureBestStream(tabId),
+          COLLECT_WINDOW_MS,
+        ),
       })
     }
     return undefined
@@ -136,9 +139,9 @@ chrome.webRequest.onBeforeRequest.addListener(
   { urls: ['*://*.tvp.pl/*.m3u8*'] },
 )
 
-logger.info('bg', 'webRequest listener zarejestrowany')
+logger.info('bg', 'webRequest listener registered')
 
-async function finalize(tabId: number) {
+const captureBestStream = async (tabId: number) => {
   const entry = pending.get(tabId)
   pending.delete(tabId)
   if (!entry || entry.urls.length === 0) return
@@ -156,13 +159,15 @@ async function finalize(tabId: number) {
     host = new URL(sourceUrl).hostname
   } catch {}
   if (host !== 'sport.tvp.pl' && !host.endsWith('.sport.tvp.pl')) {
-    logger.info('bg', 'pomijam - karta nie jest sport.tvp.pl', host)
+    logger.info('bg', 'skipping - tab is not sport.tvp.pl', host)
     return
   }
 
   const key = captureKey(tabId)
   const hadCapture = !!(await chrome.storage.session.get(key))[key]
-  const candidates = [...entry.urls].sort((a, b) => rank(a) - rank(b))
+  const candidates = [...entry.urls].sort(
+    (a, b) => rankStreamUrl(a) - rankStreamUrl(b),
+  )
 
   for (const url of candidates) {
     if (!(await isPlayablePlaylist(url))) continue
@@ -173,17 +178,17 @@ async function finalize(tabId: number) {
     }
     await chrome.storage.session.set({ [key]: capture })
     setIconState(true, tabId)
-    logger.info('bg', 'wybrano strumień', url.slice(0, 90))
+    logger.info('bg', 'stream selected', url.slice(0, 90))
 
     if (!hadCapture && (await loadSettings()).autoOpen) {
       await openPlayer(tab, capture)
     }
     return
   }
-  logger.warn('bg', 'brak działającego strumienia', tabId)
+  logger.warn('bg', 'no playable stream', tabId)
 }
 
-async function openPlayer(tab: chrome.tabs.Tab, capture: StreamCapture) {
+const openPlayer = async (tab: chrome.tabs.Tab, capture: StreamCapture) => {
   const { title, subtitle } = parseTitle(tab.title)
   const id = crypto.randomUUID()
   await chrome.storage.session.set({
@@ -193,23 +198,23 @@ async function openPlayer(tab: chrome.tabs.Tab, capture: StreamCapture) {
     url: chrome.runtime.getURL(`index.html?id=${id}`),
     index: (tab.index ?? 0) + 1,
   })
-  logger.info('bg', 'otwarto player', id)
+  logger.info('bg', 'player opened', id)
 }
 
-async function isPlayablePlaylist(url: string): Promise<boolean> {
+const isPlayablePlaylist = async (url: string): Promise<boolean> => {
   try {
     const res = await fetch(url, { credentials: 'omit' })
     const ok = res.ok && (await res.text()).trimStart().startsWith('#EXTM3U')
-    logger.info('bg', 'walidacja', res.status, ok ? 'OK' : 'ODRZUCONA')
+    logger.info('bg', 'validation', res.status, ok ? 'OK' : 'REJECTED')
     return ok
   } catch (e) {
-    logger.info('bg', 'walidacja nieudana', String(e))
+    logger.info('bg', 'validation failed', String(e))
     return false
   }
 }
 
-function clearTab(tabId: number, reason: string) {
-  logger.info('bg', 'czyszczę stan karty', tabId, reason)
+const clearTab = (tabId: number, reason: string) => {
+  logger.info('bg', 'clearing tab state', tabId, reason)
   const entry = pending.get(tabId)
   if (entry) clearTimeout(entry.timer)
   pending.delete(tabId)
@@ -220,7 +225,7 @@ function clearTab(tabId: number, reason: string) {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   if (changeInfo.url)
-    clearTab(tabId, `nawigacja na ${changeInfo.url.slice(0, 80)}`)
+    clearTab(tabId, `navigated to ${changeInfo.url.slice(0, 80)}`)
 })
 
 chrome.tabs.onRemoved.addListener((tabId) => {
@@ -239,18 +244,20 @@ chrome.action.onClicked.addListener(async (tab) => {
       | StreamCapture
       | undefined
     if (!capture) {
-      logger.warn('bg', 'klik bez capture - wyłączam ikonkę')
+      logger.warn('bg', 'click without capture - disabling icon')
       setIconState(false, tab.id)
       return
     }
 
     await openPlayer(tab, capture)
   } catch (e) {
-    logger.error('bg', 'błąd obsługi kliknięcia', e)
+    logger.error('bg', 'click handler error', e)
   }
 })
 
-export function parseTitle(raw?: string): { title: string; subtitle: string } {
+export const parseTitle = (
+  raw?: string,
+): { title: string; subtitle: string } => {
   const fallback = { title: 'Transmisja TVP Sport™', subtitle: '' }
   if (!raw) return fallback
 

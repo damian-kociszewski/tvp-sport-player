@@ -1,6 +1,6 @@
-import type { StreamPayload } from '../../../shared/types'
+import type { StreamPayload } from '@/shared/stream'
 
-export function StreamInfo({ payload }: { payload: StreamPayload }) {
+export const StreamInfo = ({ payload }: { payload: StreamPayload }) => {
   return (
     <div id="tvp-stream-info" className="flex flex-col gap-1.5">
       <h1
@@ -12,7 +12,7 @@ export function StreamInfo({ payload }: { payload: StreamPayload }) {
       {payload.subtitle && (
         <span
           id="tvp-stream-subtitle"
-          className="font-mono text-xs tracking-[0.06em] text-muted"
+          className="font-mono text-xs tracking-[0.06em] text-muted-foreground"
         >
           {payload.subtitle}
         </span>

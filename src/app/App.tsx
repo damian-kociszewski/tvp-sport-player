@@ -1,28 +1,15 @@
 import { useEffect, useRef } from 'react'
-import type { PlayerSettings, Theme } from '../shared/settings'
-import { Footer } from './components/core/Footer'
-import { Navbar } from './components/core/Navbar'
-import { VideoStage } from './components/player/VideoStage'
-import { usePayload } from './usePayload'
-import { useSettings } from './useSettings'
+import { Footer } from '@/app/components/layout/Footer'
+import { Navbar } from '@/app/components/layout/Navbar'
+import { ErrorOverlay } from '@/app/components/player/ErrorOverlay'
+import { VideoStage } from '@/app/components/player/VideoStage'
+import { TooltipProvider } from '@/app/components/ui/tooltip'
+import { useSettings } from '@/app/hooks/useSettings'
+import { useStreamPayload } from '@/app/hooks/useStreamPayload'
+import { useTheme } from '@/app/hooks/useTheme'
+import type { PlayerSettings } from '@/shared/settings'
 
-function MissingPayload() {
-  return (
-    <div
-      id="tvp-missing"
-      className="stage-stripes relative flex aspect-video w-full flex-col items-center justify-center gap-2.5 overflow-hidden border border-line px-6 text-center"
-    >
-      <div className="text-lg font-bold tracking-[-0.01em] text-white/85">
-        Brak danych transmisji
-      </div>
-      <div className="font-mono text-xs tracking-widest text-white/40">
-        Otwórz odtwarzacz z ikony rozszerzenia na stronie sport.tvp.pl
-      </div>
-    </div>
-  )
-}
-
-function CustomCss({ css }: { css: string }) {
+const CustomCss = ({ css }: { css: string }) => {
   const ref = useRef<HTMLStyleElement>(null)
   useEffect(() => {
     if (ref.current) ref.current.textContent = css
@@ -30,60 +17,54 @@ function CustomCss({ css }: { css: string }) {
   return <style ref={ref} />
 }
 
-function useThemeAttribute(theme: Theme) {
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-color-scheme: dark)')
-    const apply = () => {
-      const resolved =
-        theme === 'system' ? (media.matches ? 'dark' : 'light') : theme
-      document.documentElement.dataset.theme = resolved
-    }
-    apply()
-    if (theme === 'system') {
-      media.addEventListener('change', apply)
-      return () => media.removeEventListener('change', apply)
-    }
-  }, [theme])
-}
+export const App = () => {
+  const state = useStreamPayload()
+  const { ready, settings } = useSettings()
 
-export function App() {
-  const state = usePayload()
-  const { ready, settings, update } = useSettings()
-
-  useThemeAttribute(settings.theme)
+  useTheme(settings.theme)
 
   const initialSettings = useRef<PlayerSettings | null>(null)
   if (ready && !initialSettings.current) initialSettings.current = settings
 
   return (
-    <div
-      id="tvp-app"
-      className="flex min-h-dvh flex-col bg-bg font-sans text-fg scrollbar-gutter-stable"
-    >
-      <Navbar settings={settings} update={update} />
-
-      <main
-        id="tvp-main"
-        className="flex flex-1 flex-col items-center justify-start p-[clamp(16px,2vw,40px)]"
+    <TooltipProvider>
+      <div
+        id="tvp-app"
+        className="flex min-h-dvh flex-col bg-background font-sans text-foreground scrollbar-gutter-stable"
       >
-        <div
-          id="tvp-content"
-          className="flex w-[min(1200px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-4"
+        <Navbar />
+
+        <main
+          id="tvp-main"
+          className="flex flex-1 flex-col items-center justify-start p-[clamp(16px,2vw,40px)]"
         >
-          {state.status === 'missing' && <MissingPayload />}
-          {state.status === 'ready' && initialSettings.current && (
-            <>
+          <div
+            id="tvp-content"
+            className="flex w-[min(1200px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-4"
+          >
+            {state.status === 'missing' && (
+              <div
+                id="tvp-missing"
+                className="relative aspect-video w-full overflow-hidden border"
+              >
+                <ErrorOverlay error="missing" />
+              </div>
+            )}
+            {state.status === 'ready' && initialSettings.current && (
               <VideoStage
                 payload={state.payload}
-                settings={initialSettings.current}
+                initial={initialSettings.current}
+                seekStep={settings.seekStep}
+                clickAction={settings.clickAction}
+                rememberVolume={settings.rememberVolume}
               />
-            </>
-          )}
-        </div>
-      </main>
+            )}
+          </div>
+        </main>
 
-      <Footer />
-      <CustomCss css={settings.customCss} />
-    </div>
+        <Footer />
+        <CustomCss css={settings.customCss} />
+      </div>
+    </TooltipProvider>
   )
 }

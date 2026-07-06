@@ -1,90 +1,88 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 @import "@vidstack/react/player/styles/base.css";
 
-@theme {
-    --color-bg: #141311;
-    --color-fg: #f2efe9;
-    --color-card: #1d1b18;
-    --color-line: #2c2925;
-    --color-hoverbg: #26231f;
-    --color-muted: #8f8a80;
-    --color-live: oklch(0.62 0.19 25);
-    --color-accent: #eaff00;
-    --color-accent-ink: #141311;
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+    --background: #141311;
+    --foreground: #f2efe9;
+    --card: #1d1b18;
+    --card-foreground: #f2efe9;
+    --popover: #1d1b18;
+    --popover-foreground: #f2efe9;
+    --primary: #eaff00;
+    --primary-foreground: #141311;
+    --secondary: #26231f;
+    --secondary-foreground: #f2efe9;
+    --muted: #26231f;
+    --muted-foreground: #8f8a80;
+    --accent: #26231f;
+    --accent-foreground: #f2efe9;
+    --destructive: oklch(0.62 0.19 25);
+    --border: #2c2925;
+    --input: #2c2925;
+    --ring: #eaff00;
+    --radius: 0;
+    color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+    --background: #f4f1ea;
+    --foreground: #1a1714;
+    --card: #ffffff;
+    --card-foreground: #1a1714;
+    --popover: #ffffff;
+    --popover-foreground: #1a1714;
+    --primary: #eaff00;
+    --primary-foreground: #141311;
+    --secondary: #ebe7dd;
+    --secondary-foreground: #1a1714;
+    --muted: #ebe7dd;
+    --muted-foreground: #6c6659;
+    --accent: #ebe7dd;
+    --accent-foreground: #1a1714;
+    --destructive: oklch(0.58 0.2 25);
+    --border: #e4ded2;
+    --input: #e4ded2;
+    --ring: oklch(0.7 0.16 112);
+    color-scheme: light;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --radius-xs: calc(var(--radius) * 0.4);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
     --font-sans: "Archivo Variable", Helvetica, sans-serif;
     --font-mono: "JetBrains Mono", monospace;
 }
 
-:root[data-theme="light"] {
-    --color-bg: #f4f1ea;
-    --color-fg: #1a1714;
-    --color-card: #ffffff;
-    --color-line: #e4ded2;
-    --color-hoverbg: #ebe7dd;
-    --color-muted: #6c6659;
-}
-
-html,
-body {
-    background: var(--color-bg);
-}
-
-button,
-a,
-[role="button"],
-[role="switch"],
-[role="slider"],
-input[type="range"] {
-    cursor: pointer;
-}
-
-.settings-range {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 12px;
-    background: transparent;
-}
-.settings-range::-webkit-slider-runnable-track {
-    height: 4px;
-    border-radius: 0px;
-    background: linear-gradient(
-        to right,
-        var(--color-accent) var(--fill, 50%),
-        rgba(255, 255, 255, 0.25) var(--fill, 50%)
-    );
-}
-.settings-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    margin-top: -4px;
-    border: none;
-    border-radius: 0px;
-    background: #fff;
-}
-.settings-range::-moz-range-track {
-    height: 4px;
-    border-radius: 0px;
-    background: rgba(255, 255, 255, 0.25);
-}
-.settings-range::-moz-range-progress {
-    height: 4px;
-    border-radius: 0px;
-    background: var(--color-accent);
-}
-.settings-range::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    border: none;
-    border-radius: 0px;
-    background: #fff;
-}
-
-.stage-stripes {
-    background: repeating-linear-gradient(
-        135deg,
-        #171512 0 14px,
-        #131110 14px 28px
-    );
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    html,
+    body {
+        @apply bg-background text-foreground;
+    }
 }

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { logger } from '../shared/logger'
+import { logger } from '@/shared/logger'
 import {
   DEFAULT_SETTINGS,
   loadSettings,
   type PlayerSettings,
   SETTINGS_KEY,
   saveSettings,
-} from '../shared/settings'
+} from '@/shared/settings'
 
 export interface SettingsState {
   ready: boolean
@@ -14,7 +14,7 @@ export interface SettingsState {
   update: (patch: Partial<PlayerSettings>) => void
 }
 
-export function useSettings(): SettingsState {
+export const useSettings = (): SettingsState => {
   const [settings, setSettings] = useState<PlayerSettings>(DEFAULT_SETTINGS)
   const [ready, setReady] = useState(false)
 
@@ -41,7 +41,7 @@ export function useSettings(): SettingsState {
   }, [])
 
   const update = (patch: Partial<PlayerSettings>) => {
-    logger.info('player', 'zmiana ustawień', patch)
+    logger.info('player', 'settings changed', patch)
     setSettings((prev) => ({ ...prev, ...patch }))
     void saveSettings(patch)
   }

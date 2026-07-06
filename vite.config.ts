@@ -6,6 +6,9 @@ import manifest from './manifest.config'
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), crx({ manifest })],
+  resolve: {
+    alias: { '@': new URL('src', import.meta.url).pathname },
+  },
   build: {
     chunkSizeWarningLimit: 600,
     rollupOptions: {
