@@ -49,4 +49,17 @@ export default defineManifest(({ mode }) => ({
   },
   permissions: ['webRequest', 'storage', 'declarativeNetRequest'],
   host_permissions: ['*://*.tvp.pl/*', '*://*.redcdn.pl/*'],
+  ...(mode === 'gecko'
+    ? {
+        browser_specific_settings: {
+          gecko: {
+            id: 'tvp-sport-player@damian-kociszewski',
+            strict_min_version: '115.0',
+            data_collection_permissions: {
+              required: ['none'],
+            },
+          },
+        },
+      }
+    : {}),
 }))
