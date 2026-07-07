@@ -7,7 +7,6 @@ import { TooltipProvider } from '@/app/components/ui/tooltip'
 import { useSettings } from '@/app/hooks/useSettings'
 import { useStreamPayload } from '@/app/hooks/useStreamPayload'
 import { useTheme } from '@/app/hooks/useTheme'
-import type { PlayerSettings } from '@/shared/settings'
 
 const CustomCss = ({ css }: { css: string }) => {
   const ref = useRef<HTMLStyleElement>(null)
@@ -23,9 +22,6 @@ export const App = () => {
 
   useTheme(settings.theme)
 
-  const initialSettings = useRef<PlayerSettings | null>(null)
-  if (ready && !initialSettings.current) initialSettings.current = settings
-
   return (
     <TooltipProvider>
       <div
@@ -40,7 +36,7 @@ export const App = () => {
         >
           <div
             id="tvp-content"
-            className="flex w-[min(1200px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-4"
+            className="flex w-[min(1600px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-4"
           >
             {state.status === 'missing' && (
               <div
@@ -50,14 +46,8 @@ export const App = () => {
                 <ErrorOverlay error="missing" />
               </div>
             )}
-            {state.status === 'ready' && initialSettings.current && (
-              <VideoStage
-                payload={state.payload}
-                initial={initialSettings.current}
-                seekStep={settings.seekStep}
-                clickAction={settings.clickAction}
-                rememberVolume={settings.rememberVolume}
-              />
+            {state.status === 'ready' && ready && (
+              <VideoStage payload={state.payload} />
             )}
           </div>
         </main>

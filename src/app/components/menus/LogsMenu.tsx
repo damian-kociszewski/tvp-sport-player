@@ -1,7 +1,7 @@
 import { CopyIcon, ScrollIcon, TrashIcon } from '@phosphor-icons/react'
 import { useCallback, useEffect, useState } from 'react'
 import { MenuHeader } from '@/app/components/menus/MenuHeader'
-import { NavMenu } from '@/app/components/menus/NavMenu'
+import { NavMenu, NavMenuContent } from '@/app/components/menus/NavMenu'
 import { Button } from '@/app/components/ui/button'
 import { cn } from '@/lib/utils'
 import { clearLogs, getLogs, LOGS_KEY, type LogEntry } from '@/shared/logger'
@@ -80,7 +80,7 @@ export const LogsMenu = () => {
         </div>
       </MenuHeader>
 
-      <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto py-1">
+      <NavMenuContent>
         <div className="px-3 py-2 font-mono text-[11px] leading-relaxed">
           {logs.length === 0 ? (
             <p className="py-4 text-center text-muted-foreground">
@@ -110,7 +110,7 @@ export const LogsMenu = () => {
             ))
           )}
         </div>
-      </div>
+      </NavMenuContent>
     </NavMenu>
   )
 }

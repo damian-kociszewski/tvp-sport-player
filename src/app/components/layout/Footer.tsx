@@ -42,8 +42,8 @@ const FooterLink = ({
 
 export const Footer = () => {
   return (
-    <footer id="tvp-footer" className="border-t px-[clamp(16px,3vw,32px)] py-7">
-      <div className="mx-auto flex w-full max-w-300 flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+    <footer id="tvp-footer" className="border-t px-[clamp(16px,2vw,40px)] py-7">
+      <div className="mx-auto flex w-[min(1600px,100%,calc((100dvh-60px-110px)*16/9))] flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex max-w-160 flex-col gap-2.5">
           <div className="flex items-center gap-2">
             <LogoMark className="size-5" />

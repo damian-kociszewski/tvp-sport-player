@@ -39,7 +39,8 @@ export const CssDialog = ({
       <DialogContent
         id="tvp-css-modal"
         showCloseButton={false}
-        className="flex max-h-[80vh] w-[min(680px,calc(100%-2rem))] flex-col gap-0 p-0 sm:max-w-170"
+        onInteractOutside={(e) => e.preventDefault()}
+        className="flex h-[min(600px,80vh)] w-[min(680px,calc(100%-2rem))] flex-col gap-0 p-0 sm:max-w-170"
       >
         <DialogHeader className="h-11 flex-row items-center justify-between border-border border-b py-0 pr-2 pl-4">
           <DialogTitle className="font-mono text-[11px] font-normal uppercase tracking-[0.08em] text-muted-foreground">
@@ -67,7 +68,7 @@ export const CssDialog = ({
           placeholder={PLACEHOLDER}
           spellCheck={false}
           autoComplete="off"
-          className="min-h-80 flex-1 resize-none rounded-none border-0 bg-transparent px-4 py-3 font-mono text-[12px] leading-relaxed shadow-none focus-visible:ring-0 dark:bg-transparent"
+          className="field-sizing-fixed min-h-0 flex-1 resize-none rounded-none border-0 bg-transparent px-4 py-3 font-mono text-[12px] leading-relaxed shadow-none focus-visible:ring-0 dark:bg-transparent"
         />
 
         <DialogFooter className="border-border border-t px-3 py-2.5">

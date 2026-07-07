@@ -4,18 +4,23 @@ import {
   TranslateIcon,
 } from '@phosphor-icons/react'
 import {
+  isHLSProvider,
   useAudioOptions,
   useCaptionOptions,
   useMediaPlayer,
+  useMediaProvider,
+  useMediaState,
   useVideoQualityOptions,
 } from '@vidstack/react'
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/app/components/ui/popover'
+import { useSettings } from '@/app/hooks/useSettings'
 import { cn } from '@/lib/utils'
+import { logger } from '@/shared/logger'
 
 export interface PlayerMenuOption {
   label: string
@@ -66,7 +71,7 @@ export const PlayerMenu = <T extends PlayerMenuOption>({
         align="end"
         sideOffset={10}
         className={cn(
-          'z-20 flex w-auto min-w-40 flex-col gap-0.5 border-white/14 bg-[rgba(20,19,17,0.95)] p-1.25 text-white shadow-none backdrop-blur-lg',
+          'z-20 flex max-h-[60vh] w-auto min-w-40 flex-col gap-0.5 overflow-x-hidden overflow-y-auto border-white/14 bg-[rgba(20,19,17,0.95)] p-1.25 text-white shadow-none backdrop-blur-lg',
           panelClassName,
         )}
       >
@@ -95,7 +100,38 @@ export const PlayerMenu = <T extends PlayerMenuOption>({
   )
 }
 
+const useQualityStrategy = () => {
+  const { settings } = useSettings()
+  const player = useMediaPlayer()
+  const options = useVideoQualityOptions({ auto: false, sort: 'descending' })
+  const applied = useRef(false)
+  const userOverride = useRef(false)
+
+  useEffect(() => {
+    if (!player) return
+    return player.listen('media-quality-change-request', (event) => {
+      if (event.isOriginTrusted) userOverride.current = true
+    })
+  }, [player])
+
+  const mode = settings.qualityMode
+
+  useEffect(() => {
+    if (options.length === 0) {
+      applied.current = false
+      return
+    }
+    if (applied.current || userOverride.current || mode === 'auto') return
+    const target = mode === 'highest' ? options[0] : options[options.length - 1]
+    if (!target) return
+    target.select()
+    applied.current = true
+    logger.info('player', 'applied default quality', mode, target.label)
+  }, [mode, options])
+}
+
 export const QualityMenu = () => {
+  useQualityStrategy()
   const options = useVideoQualityOptions({ auto: 'Auto', sort: 'descending' })
   if (options.disabled) return null
 
@@ -136,7 +172,27 @@ export const CaptionsMenu = () => {
   )
 }
 
+const useAudioTrackSync = () => {
+  const player = useMediaPlayer()
+  const provider = useMediaProvider()
+  const tracks = useMediaState('audioTracks')
+  const selected = useMediaState('audioTrack')
+
+  useEffect(() => {
+    if (!player || selected || tracks.length === 0 || !isHLSProvider(provider))
+      return
+    const idx = provider.instance?.audioTrack ?? -1
+    if (idx < 0) return
+    const track = player.audioTracks[idx]
+    if (track) {
+      track.selected = true
+      logger.info('player', 'audio track synced', track.label)
+    }
+  }, [player, provider, tracks, selected])
+}
+
 export const AudioMenu = () => {
+  useAudioTrackSync()
   const options = useAudioOptions()
   if (options.disabled || options.length === 0) return null
 

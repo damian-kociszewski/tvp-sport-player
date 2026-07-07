@@ -1,5 +1,7 @@
 node_modules/
 dist/
+dist-chromium/
+dist-gecko/
 .vite/
 .vscode/
 .idea/

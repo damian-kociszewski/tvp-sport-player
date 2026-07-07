@@ -1,12 +1,12 @@
 import {
-  ArrowCounterClockwiseIcon,
   BracketsCurlyIcon,
+  ClockCounterClockwiseIcon,
   GearSixIcon,
 } from '@phosphor-icons/react'
 import { type ReactNode, useState } from 'react'
 import { CssDialog } from '@/app/components/menus/CssDialog'
 import { MenuHeader } from '@/app/components/menus/MenuHeader'
-import { NavMenu } from '@/app/components/menus/NavMenu'
+import { NavMenu, NavMenuContent } from '@/app/components/menus/NavMenu'
 import { Button } from '@/app/components/ui/button'
 import { Separator } from '@/app/components/ui/separator'
 import { Slider } from '@/app/components/ui/slider'
@@ -119,7 +119,7 @@ export const SettingsMenu = () => {
         icon={<GearSixIcon className="size-4.5" />}
       >
         <MenuHeader title="Ustawienia" />
-        <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto py-1">
+        <NavMenuContent>
           <SettingsRow
             label="Głośność domyślna"
             hint="Poziom głośności, z jakim zaczynają nowe okna odtwarzacza."
@@ -197,7 +197,7 @@ export const SettingsMenu = () => {
 
           <SettingsRow
             label="Przewijanie"
-            hint="O ile sekund przewijają strzałki ← / →."
+            hint="O ile sekund przewijane jest nagranie do tyłu / do przodu."
             stack
           >
             <Segment
@@ -247,7 +247,7 @@ export const SettingsMenu = () => {
             </Button>
           </SettingsRow>
 
-          <Separator className="mx-3 my-1 w-auto" />
+          <Separator className="mx-3 my-1 data-[orientation=horizontal]:w-auto" />
 
           <div className="px-3 py-2">
             <Button
@@ -256,11 +256,11 @@ export const SettingsMenu = () => {
               onClick={() => update(DEFAULT_SETTINGS)}
               className="w-full text-[13px] text-muted-foreground hover:text-destructive"
             >
-              <ArrowCounterClockwiseIcon className="size-3.5" />
+              <ClockCounterClockwiseIcon className="size-3.5" />
               Resetuj ustawienia
             </Button>
           </div>
-        </div>
+        </NavMenuContent>
       </NavMenu>
 
       <CssDialog

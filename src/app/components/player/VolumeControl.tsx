@@ -3,7 +3,40 @@ import {
   SpeakerLowIcon,
   SpeakerXIcon,
 } from '@phosphor-icons/react'
-import { MuteButton, useMediaState, VolumeSlider } from '@vidstack/react'
+import {
+  MuteButton,
+  useMediaState,
+  useMediaStore,
+  VolumeSlider,
+} from '@vidstack/react'
+import { useEffect, useRef } from 'react'
+import { useSettings } from '@/app/hooks/useSettings'
+import { saveSettings } from '@/shared/settings'
+
+export const suppressMutedSave = { current: false }
+
+const VolumeMemory = () => {
+  const { settings } = useSettings()
+  const { volume, muted } = useMediaStore()
+  const primed = useRef(false)
+
+  useEffect(() => {
+    if (!primed.current) {
+      primed.current = true
+      return
+    }
+    if (!settings.rememberVolume) return
+    if (!muted) suppressMutedSave.current = false
+    if (muted && suppressMutedSave.current) return
+    const id = setTimeout(
+      () => void saveSettings({ defaultVolume: volume, startMuted: muted }),
+      300,
+    )
+    return () => clearTimeout(id)
+  }, [volume, muted, settings.rememberVolume])
+
+  return null
+}
 
 const VolumeIcon = () => {
   const muted = useMediaState('muted')
@@ -33,9 +66,10 @@ const VolumeValue = () => {
 export const VolumeControl = () => {
   return (
     <div id="tvp-volume" className="flex items-center gap-1">
+      <VolumeMemory />
       <MuteButton
         id="tvp-btn-mute"
-        title="Wycisz (M)"
+        title="Wycisz / odcisz (M)"
         className="mr-1.5 flex size-9 cursor-pointer items-center justify-center text-white transition-all outline-none hover:bg-white/12 focus-visible:ring-[3px] focus-visible:ring-ring/50"
       >
         <VolumeIcon />

@@ -1,3 +1,8 @@
+import { useMediaPlayer } from '@vidstack/react'
+import { useEffect, useState } from 'react'
+import { useStreamPayload } from '@/app/hooks/useStreamPayload'
+import { logger } from '@/shared/logger'
+
 export type PlayerError = 'drm' | 'expired' | 'network' | 'missing'
 
 const MESSAGES: Record<PlayerError, { title: string; detail: string }> = {
@@ -48,5 +53,37 @@ export const ErrorOverlay = ({
         </a>
       )}
     </div>
+  )
+}
+
+export const PlayerErrorOverlay = () => {
+  const player = useMediaPlayer()
+  const payload = useStreamPayload()
+  const [error, setError] = useState<PlayerError | null>(null)
+
+  useEffect(() => {
+    if (!player) return
+    return player.listen('hls-error', (event) => {
+      const data = event.detail
+      logger.error('player', 'HLS error', data.type, data.details, data.fatal)
+      if (
+        data.details?.startsWith('keySystem') ||
+        data.details === 'fragDecryptError'
+      ) {
+        setError('drm')
+      } else if (data.fatal && data.type === 'networkError') {
+        setError(data.response?.code === 403 ? 'expired' : 'network')
+      }
+    })
+  }, [player])
+
+  if (!error) return null
+  return (
+    <ErrorOverlay
+      error={error}
+      sourceUrl={
+        payload.status === 'ready' ? payload.payload.sourceUrl : undefined
+      }
+    />
   )
 }

@@ -10,14 +10,20 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/app/components/ui/tooltip'
-import { cn } from '@/lib/utils'
+
+export const NavMenuContent = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto py-1">
+      {children}
+    </div>
+  )
+}
 
 export const NavMenu = ({
   id,
   panelId,
   label,
   icon,
-  className,
   children,
   open,
   onOpenChange,
@@ -26,7 +32,6 @@ export const NavMenu = ({
   panelId: string
   label: string
   icon: ReactNode
-  className?: string
   children: ReactNode
   open?: boolean
   onOpenChange?: (open: boolean) => void
@@ -53,10 +58,7 @@ export const NavMenu = ({
         id={panelId}
         align="end"
         sideOffset={8}
-        className={cn(
-          'flex max-h-[60vh] w-96 flex-col overflow-hidden p-0',
-          className,
-        )}
+        className="flex max-h-[60vh] w-96 flex-col overflow-hidden p-0"
       >
         {children}
       </PopoverContent>

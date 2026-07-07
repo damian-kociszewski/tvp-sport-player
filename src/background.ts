@@ -18,8 +18,6 @@ interface Pending {
 const seenUrls = new Map<number, Set<string>>()
 const pending = new Map<number, Pending>()
 
-logger.info('bg', 'service worker start')
-
 const ICON_SIZES = [16, 32, 48, 96, 128, 256, 512, 1024]
 
 const iconSet = (state: 'active' | 'inactive'): Record<number, string> => {
@@ -45,62 +43,53 @@ const setIconState = (active: boolean, tabId?: number) => {
   }
 }
 
-const refreshIcon = async (tabId: number) => {
-  const key = captureKey(tabId)
-  const has = !!(await chrome.storage.session.get(key))[key]
-  setIconState(has, tabId)
-}
-
 setIconState(false)
 void chrome.action.disable()
 
-chrome.tabs.onActivated.addListener(({ tabId }) => void refreshIcon(tabId))
-
 const CORS_RULE_ID = 1
-void chrome.declarativeNetRequest.updateDynamicRules({
-  removeRuleIds: [CORS_RULE_ID],
-  addRules: [
-    {
-      id: CORS_RULE_ID,
-      priority: 1,
-      action: {
-        type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-        requestHeaders: [
-          {
-            header: 'origin',
-            operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-            value: 'https://sport.tvp.pl',
-          },
-          {
-            header: 'referer',
-            operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-            value: 'https://sport.tvp.pl/',
-          },
-        ],
-        responseHeaders: [
-          {
-            header: 'access-control-allow-origin',
-            operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-            value: '*',
-          },
-          {
-            header: 'access-control-allow-credentials',
-            operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
-          },
-        ],
+const registerCorsRule = () =>
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [CORS_RULE_ID],
+    addRules: [
+      {
+        id: CORS_RULE_ID,
+        priority: 1,
+        action: {
+          type: 'modifyHeaders',
+          requestHeaders: [
+            {
+              header: 'origin',
+              operation: 'set',
+              value: 'https://sport.tvp.pl',
+            },
+            {
+              header: 'referer',
+              operation: 'set',
+              value: 'https://sport.tvp.pl/',
+            },
+          ],
+          responseHeaders: [
+            {
+              header: 'access-control-allow-origin',
+              operation: 'set',
+              value: '*',
+            },
+            {
+              header: 'access-control-allow-credentials',
+              operation: 'remove',
+            },
+          ],
+        },
+        condition: {
+          requestDomains: ['tvp.pl'],
+          excludedInitiatorDomains: ['tvp.pl'],
+          resourceTypes: ['xmlhttprequest', 'media', 'other'],
+        },
       },
-      condition: {
-        urlFilter: '||tvp.pl',
-        excludedInitiatorDomains: ['tvp.pl'],
-        resourceTypes: [
-          chrome.declarativeNetRequest.ResourceType.XMLHTTPREQUEST,
-          chrome.declarativeNetRequest.ResourceType.MEDIA,
-          chrome.declarativeNetRequest.ResourceType.OTHER,
-        ],
-      },
-    },
-  ],
-})
+    ],
+  })
+
+chrome.runtime.onInstalled.addListener(() => void registerCorsRule())
 
 const rankStreamUrl = (url: string): number => {
   try {
@@ -138,8 +127,6 @@ chrome.webRequest.onBeforeRequest.addListener(
   },
   { urls: ['*://*.tvp.pl/*.m3u8*'] },
 )
-
-logger.info('bg', 'webRequest listener registered')
 
 const captureBestStream = async (tabId: number) => {
   const entry = pending.get(tabId)
@@ -214,8 +201,10 @@ const isPlayablePlaylist = async (url: string): Promise<boolean> => {
 }
 
 const clearTab = (tabId: number, reason: string) => {
-  logger.info('bg', 'clearing tab state', tabId, reason)
   const entry = pending.get(tabId)
+  if (entry || seenUrls.has(tabId)) {
+    logger.info('bg', 'clearing tab state', tabId, reason)
+  }
   if (entry) clearTimeout(entry.timer)
   pending.delete(tabId)
   seenUrls.delete(tabId)

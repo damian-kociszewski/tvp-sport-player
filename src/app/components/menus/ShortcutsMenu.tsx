@@ -7,7 +7,7 @@ import {
 } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
 import { MenuHeader } from '@/app/components/menus/MenuHeader'
-import { NavMenu } from '@/app/components/menus/NavMenu'
+import { NavMenu, NavMenuContent } from '@/app/components/menus/NavMenu'
 import { Kbd } from '@/app/components/ui/kbd'
 
 const arrow = (Icon: typeof ArrowLeftIcon) => (
@@ -26,6 +26,8 @@ const SHORTCUTS: { label: string; keys: { id: string; node: ReactNode }[] }[] =
     { label: 'Wycisz / odcisz', keys: [{ id: 'm', node: 'M' }] },
     { label: 'Pełny ekran', keys: [{ id: 'f', node: 'F' }] },
     { label: 'Obraz w obrazie', keys: [{ id: 'i', node: 'I' }] },
+    { label: 'Przejdź na żywo', keys: [{ id: 'l', node: 'L' }] },
+    { label: 'AirPlay / Cast', keys: [{ id: 'a', node: 'A' }] },
     {
       label: 'Przewiń w tył / w przód',
       keys: [
@@ -49,10 +51,9 @@ export const ShortcutsMenu = () => {
       panelId="tvp-shortcuts-panel"
       label="Skróty klawiszowe"
       icon={<KeyboardIcon className="size-4.5" />}
-      className="pb-1.5"
     >
       <MenuHeader title="Skróty klawiszowe" />
-      <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto py-1">
+      <NavMenuContent>
         {SHORTCUTS.map((s) => (
           <div
             key={s.label}
@@ -73,7 +74,7 @@ export const ShortcutsMenu = () => {
             </div>
           </div>
         ))}
-      </div>
+      </NavMenuContent>
     </NavMenu>
   )
 }

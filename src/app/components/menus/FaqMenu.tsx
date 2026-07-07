@@ -1,6 +1,6 @@
 import { BugIcon, QuestionIcon } from '@phosphor-icons/react'
 import { MenuHeader } from '@/app/components/menus/MenuHeader'
-import { NavMenu } from '@/app/components/menus/NavMenu'
+import { NavMenu, NavMenuContent } from '@/app/components/menus/NavMenu'
 import { Button } from '@/app/components/ui/button'
 import { Separator } from '@/app/components/ui/separator'
 
@@ -32,7 +32,7 @@ export const FaqMenu = () => {
       icon={<QuestionIcon className="size-4.5" />}
     >
       <MenuHeader title="Pomoc" />
-      <div className="overflow-y-auto py-1">
+      <NavMenuContent>
         {FAQ.map((item) => (
           <div key={item.q} className="px-3 py-2">
             <p className="text-[13px] font-medium">{item.q}</p>
@@ -41,7 +41,7 @@ export const FaqMenu = () => {
             </p>
           </div>
         ))}
-        <Separator className="mx-3 my-1 w-auto" />
+        <Separator className="mx-3 my-1 data-[orientation=horizontal]:w-auto" />
         <div className="px-3 py-2">
           <Button
             asChild
@@ -59,7 +59,7 @@ export const FaqMenu = () => {
             </a>
           </Button>
         </div>
-      </div>
+      </NavMenuContent>
     </NavMenu>
   )
 }
