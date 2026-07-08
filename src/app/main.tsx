@@ -5,7 +5,7 @@ import '@fontsource/jetbrains-mono/latin-500.css'
 import '@fontsource/jetbrains-mono/latin-ext-400.css'
 import '@fontsource/jetbrains-mono/latin-ext-500.css'
 import './main.css'
-import { App } from '@/app/App'
+import { App } from '@/app/app'
 import { logger } from '@/shared/logger'
 
 window.addEventListener('error', (e) =>

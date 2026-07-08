@@ -1,6 +1,6 @@
 import { BugIcon, QuestionIcon } from '@phosphor-icons/react'
-import { MenuHeader } from '@/app/components/menus/MenuHeader'
-import { NavMenu, NavMenuContent } from '@/app/components/menus/NavMenu'
+import { MenuHeader } from '@/app/components/menus/menu-header'
+import { NavMenu, NavMenuContent } from '@/app/components/menus/nav-menu'
 import { Button } from '@/app/components/ui/button'
 import { Separator } from '@/app/components/ui/separator'
 

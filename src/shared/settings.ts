@@ -17,11 +17,11 @@ export interface PlayerSettings {
 
 export const DEFAULT_SETTINGS: PlayerSettings = {
   theme: 'system',
-  defaultVolume: 0.5,
+  defaultVolume: 0.2,
   startMuted: false,
   qualityMode: 'auto',
   autoplay: true,
-  rememberVolume: true,
+  rememberVolume: false,
   seekStep: 15,
   autoOpen: true,
   clickAction: 'none',

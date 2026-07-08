@@ -1,6 +1,6 @@
 import { CodeIcon, GlobeIcon, HandCoinsIcon } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
-import { LogoMark, LogoWordmark } from '@/app/components/layout/Logo'
+import { LogoMark, LogoWordmark } from '@/app/components/shared/logo'
 import { Button } from '@/app/components/ui/button'
 import {
   Tooltip,

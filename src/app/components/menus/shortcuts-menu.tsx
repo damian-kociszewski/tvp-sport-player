@@ -6,8 +6,8 @@ import {
   KeyboardIcon,
 } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
-import { MenuHeader } from '@/app/components/menus/MenuHeader'
-import { NavMenu, NavMenuContent } from '@/app/components/menus/NavMenu'
+import { MenuHeader } from '@/app/components/menus/menu-header'
+import { NavMenu, NavMenuContent } from '@/app/components/menus/nav-menu'
 import { Kbd } from '@/app/components/ui/kbd'
 
 const arrow = (Icon: typeof ArrowLeftIcon) => (

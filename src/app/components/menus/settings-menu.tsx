@@ -4,9 +4,9 @@ import {
   GearSixIcon,
 } from '@phosphor-icons/react'
 import { type ReactNode, useState } from 'react'
-import { CssDialog } from '@/app/components/menus/CssDialog'
-import { MenuHeader } from '@/app/components/menus/MenuHeader'
-import { NavMenu, NavMenuContent } from '@/app/components/menus/NavMenu'
+import { CssDialog } from '@/app/components/menus/css-dialog'
+import { MenuHeader } from '@/app/components/menus/menu-header'
+import { NavMenu, NavMenuContent } from '@/app/components/menus/nav-menu'
 import { Button } from '@/app/components/ui/button'
 import { Separator } from '@/app/components/ui/separator'
 import { Slider } from '@/app/components/ui/slider'

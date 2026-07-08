@@ -1,8 +1,8 @@
-import { LogoMark, LogoWordmark } from '@/app/components/layout/Logo'
-import { FaqMenu } from '@/app/components/menus/FaqMenu'
-import { LogsMenu } from '@/app/components/menus/LogsMenu'
-import { SettingsMenu } from '@/app/components/menus/SettingsMenu'
-import { ShortcutsMenu } from '@/app/components/menus/ShortcutsMenu'
+import { LogoMark, LogoWordmark } from '@/app/components/shared/logo'
+import { FaqMenu } from '@/app/components/menus/faq-menu'
+import { LogsMenu } from '@/app/components/menus/logs-menu'
+import { SettingsMenu } from '@/app/components/menus/settings-menu'
+import { ShortcutsMenu } from '@/app/components/menus/shortcuts-menu'
 
 export const Navbar = () => {
   return (

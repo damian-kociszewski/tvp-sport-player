@@ -1,18 +1,18 @@
 import { Controls, useMediaState } from '@vidstack/react'
-import { FullscreenButton } from '@/app/components/player/FullscreenButton'
-import { LiveButton } from '@/app/components/player/LiveButton'
-import { PipButton } from '@/app/components/player/PipButton'
+import { FullscreenButton } from '@/app/components/player/fullscreen-button'
+import { LiveButton } from '@/app/components/player/live-button'
+import { PipButton } from '@/app/components/player/pip-button'
 import {
   AudioMenu,
   CaptionsMenu,
   QualityMenu,
-} from '@/app/components/player/PlayerMenu'
-import { PlayPauseButton } from '@/app/components/player/PlayPauseButton'
-import { RemotePlaybackButton } from '@/app/components/player/RemotePlaybackButton'
-import { SeekBar } from '@/app/components/player/SeekBar'
-import { SeekButton, SeekKeys } from '@/app/components/player/SeekButton'
-import { TimeDisplay } from '@/app/components/player/TimeDisplay'
-import { VolumeControl } from '@/app/components/player/VolumeControl'
+} from '@/app/components/player/player-menu'
+import { PlayPauseButton } from '@/app/components/player/play-pause-button'
+import { RemotePlaybackButton } from '@/app/components/player/remote-playback-button'
+import { SeekBar } from '@/app/components/player/seek-bar'
+import { SeekButton, SeekKeys } from '@/app/components/player/seek-button'
+import { TimeDisplay } from '@/app/components/player/time-display'
+import { VolumeControl } from '@/app/components/player/volume-control'
 
 export const PlayerControls = () => {
   const live = useMediaState('live')

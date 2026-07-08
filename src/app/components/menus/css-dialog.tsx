@@ -14,8 +14,7 @@ import { Textarea } from '@/app/components/ui/textarea'
 
 const PLACEHOLDER = `.tvp-player {
   border-radius: 12px;
-}
-`
+}`
 
 export const CssDialog = ({
   open,
