@@ -5,7 +5,7 @@ export default defineManifest(({ mode }) => ({
   manifest_version: 3,
   name: 'Odtwarzacz dla TVP SPORT™',
   description:
-    'Nieoficjalny odtwarzacz transmisji TVP SPORT™ - z wyborem jakości, języka, obrazem w obrazie i skrótami klawiszowymi.',
+    'Nieoficjalny odtwarzacz dla TVP SPORT™ z wyborem jakości obrazu, języka, trybem obraz w obrazie i skrótami klawiszowymi.',
   version,
   minimum_chrome_version: '116',
   icons: {
@@ -54,7 +54,7 @@ export default defineManifest(({ mode }) => ({
         browser_specific_settings: {
           gecko: {
             id: 'tvp-sport-player@damian-kociszewski',
-            strict_min_version: '115.0',
+            strict_min_version: '127.0',
             data_collection_permissions: {
               required: ['none'],
             },

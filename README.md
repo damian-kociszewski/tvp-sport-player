@@ -2,7 +2,17 @@
 
 # Odtwarzacz dla TVP SPORT™
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/nkkeeakhllmffaanpmlpefpfagbeihma?label=Chrome%20Web%20Store&color=4285F4)](https://chromewebstore.google.com/detail/odtwarzacz-dla-tvp-sport/nkkeeakhllmffaanpmlpefpfagbeihma)
+[![Użytkownicy Chrome](https://img.shields.io/chrome-web-store/users/nkkeeakhllmffaanpmlpefpfagbeihma?label=u%C5%BCytkownicy&color=4285F4)](https://chromewebstore.google.com/detail/odtwarzacz-dla-tvp-sport/nkkeeakhllmffaanpmlpefpfagbeihma)
+[![Ocena Chrome](https://img.shields.io/chrome-web-store/rating/nkkeeakhllmffaanpmlpefpfagbeihma?label=ocena&color=4285F4)](https://chromewebstore.google.com/detail/odtwarzacz-dla-tvp-sport/nkkeeakhllmffaanpmlpefpfagbeihma)
+[![Firefox Add-ons](https://img.shields.io/amo/v/odtwarzacz-dla-tvp-sport?label=Firefox%20Add-ons&color=FF7139)](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
+[![Użytkownicy Firefox](https://img.shields.io/amo/users/odtwarzacz-dla-tvp-sport?label=u%C5%BCytkownicy&color=FF7139)](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
+[![Ocena Firefox](https://img.shields.io/amo/rating/odtwarzacz-dla-tvp-sport?label=ocena&color=FF7139)](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
+[![Licencja](https://img.shields.io/github/license/damian-kociszewski/tvp-sport-player?label=licencja&color=green)](LICENSE)
+
 Nieoficjalne rozszerzenie przeglądarki, które otwiera transmisje z [sport.tvp.pl](https://sport.tvp.pl) w pełnoprawnym, dopracowanym odtwarzaczu wideo.
+
+**Pobierz**: [Chrome Web Store](https://chromewebstore.google.com/detail/odtwarzacz-dla-tvp-sport/nkkeeakhllmffaanpmlpefpfagbeihma) · [Firefox Add-ons](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
 
 ![Odtwarzacz](docs/screenshot-1.png)
 
@@ -27,25 +37,23 @@ To rozszerzenie automatycznie wykrywa transmisję na otwartej stronie i odtwarza
 
 ## Instalacja
 
+- **Chrome / Edge / Brave / Opera / Vivaldi**: zainstaluj z [Chrome Web Store](https://chromewebstore.google.com/detail/odtwarzacz-dla-tvp-sport/nkkeeakhllmffaanpmlpefpfagbeihma)
+- **Firefox / LibreWolf / Zen**: zainstaluj z [Firefox Add-ons](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
+
+Wejdź na transmisję na sport.tvp.pl i rozpocznij odtwarzanie — rozszerzenie zrobi resztę.
+
+### Instalacja ręczna
+
 1. Zbuduj rozszerzenie (poniżej) albo pobierz paczkę z [wydań](https://github.com/damian-kociszewski/tvp-sport-player/releases).
-2. **Chrome / Edge / Brave**: `chrome://extensions` → włącz „Tryb dewelopera" → „Załaduj rozpakowane" → wskaż katalog `dist-chromium`.
-3. **Firefox**: `about:debugging#/runtime/this-firefox` → „Załaduj tymczasowy dodatek" → wskaż `dist-gecko/manifest.json`. Następnie w `about:addons` nadaj rozszerzeniu uprawnienia do witryn tvp.pl i redcdn.pl.
-4. Wejdź na transmisję na sport.tvp.pl i rozpocznij odtwarzanie — rozszerzenie zrobi resztę.
-
-## Stack technologiczny
-
-- [React 19](https://react.dev) + [TypeScript](https://www.typescriptlang.org)
-- [Vite](https://vite.dev) + [CRXJS](https://crxjs.dev) — build rozszerzenia dla Chromium i Gecko
-- [Tailwind CSS 4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) (Radix UI)
-- [Vidstack](https://vidstack.io) + [hls.js](https://github.com/video-dev/hls.js) — odtwarzacz i strumieniowanie HLS
-- [Phosphor Icons](https://phosphoricons.com) · [Biome](https://biomejs.dev)
+2. **Chrome / Edge / Brave / Opera / Vivaldi**: `chrome://extensions` → włącz „Tryb dewelopera" → „Załaduj rozpakowane" → wskaż katalog `dist/chromium`.
+3. **Firefox / LibreWolf / Zen**: `about:debugging#/runtime/this-firefox` → „Załaduj tymczasowy dodatek" → wskaż `dist/gecko/manifest.json`. Następnie w `about:addons` nadaj rozszerzeniu uprawnienia do witryn tvp.pl i redcdn.pl.
 
 ## Rozwój
 
 ```bash
 npm install
 npm run dev            # tryb deweloperski (Chromium)
-npm run build          # build obu wersji: dist-chromium/ i dist-gecko/
+npm run build          # build obu wersji: dist/chromium/ i dist/gecko/
 npm run build:chromium # tylko Chromium
 npm run build:gecko    # tylko Firefox
 ```

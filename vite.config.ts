@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
     alias: { '@': new URL('src', import.meta.url).pathname },
   },
   build: {
-    outDir: mode === 'gecko' ? 'dist-gecko' : 'dist-chromium',
+    outDir: mode === 'gecko' ? 'dist/gecko' : 'dist/chromium',
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       input: { index: 'index.html' },

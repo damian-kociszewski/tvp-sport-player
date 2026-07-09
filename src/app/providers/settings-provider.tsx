@@ -1,4 +1,10 @@
-import { createContext, type ReactNode, useEffect, useState } from 'react'
+import {
+  createContext,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { logger } from '@/shared/logger'
 import {
   DEFAULT_SETTINGS,
@@ -10,20 +16,24 @@ import {
 
 export interface SettingsState {
   settings: PlayerSettings
+  initial: PlayerSettings
   update: (patch: Partial<PlayerSettings>) => void
 }
 
 export const SettingsContext = createContext<SettingsState>({
   settings: DEFAULT_SETTINGS,
+  initial: DEFAULT_SETTINGS,
   update: () => {},
 })
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [settings, setSettings] = useState<PlayerSettings>(DEFAULT_SETTINGS)
   const [ready, setReady] = useState(false)
+  const initialRef = useRef<PlayerSettings>(DEFAULT_SETTINGS)
 
   useEffect(() => {
     void loadSettings().then((s) => {
+      initialRef.current = s
       setSettings(s)
       setReady(true)
     })
@@ -53,7 +63,9 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   if (!ready) return null
 
   return (
-    <SettingsContext.Provider value={{ settings, update }}>
+    <SettingsContext.Provider
+      value={{ settings, initial: initialRef.current, update }}
+    >
       {children}
     </SettingsContext.Provider>
   )

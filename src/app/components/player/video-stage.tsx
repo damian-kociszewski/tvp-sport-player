@@ -25,10 +25,9 @@ const onProviderChange = (provider: MediaProviderAdapter | null) => {
 }
 
 export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
-  const { settings } = useSettings()
+  const { initial } = useSettings()
   const playerRef = useRef<MediaPlayerInstance>(null)
   const autoplayRetried = useRef(false)
-  const initial = useRef(settings).current
 
   const retryAutoplay = async (
     player: MediaPlayerInstance,

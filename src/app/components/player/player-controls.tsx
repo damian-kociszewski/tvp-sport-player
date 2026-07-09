@@ -2,12 +2,12 @@ import { Controls, useMediaState } from '@vidstack/react'
 import { FullscreenButton } from '@/app/components/player/fullscreen-button'
 import { LiveButton } from '@/app/components/player/live-button'
 import { PipButton } from '@/app/components/player/pip-button'
+import { PlayPauseButton } from '@/app/components/player/play-pause-button'
 import {
   AudioMenu,
   CaptionsMenu,
   QualityMenu,
 } from '@/app/components/player/player-menu'
-import { PlayPauseButton } from '@/app/components/player/play-pause-button'
 import { RemotePlaybackButton } from '@/app/components/player/remote-playback-button'
 import { SeekBar } from '@/app/components/player/seek-bar'
 import { SeekButton, SeekKeys } from '@/app/components/player/seek-button'

@@ -50,7 +50,6 @@ export const Slider = ({
       {Array.from({ length: _values.length }, (_, index) => (
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
-          // biome-ignore lint/suspicious/noArrayIndexKey: thumbs are positional and never reorder
           key={index}
           className="block size-4 shrink-0 cursor-pointer rounded-none border border-primary bg-primary-foreground shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-2 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
         />

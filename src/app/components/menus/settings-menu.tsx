@@ -144,22 +144,22 @@ export const SettingsMenu = () => {
           </SettingsRow>
 
           <SettingsRow
-            label="Rozpoczynaj wyciszony"
-            hint="Nowe okna zaczynają odtwarzanie bez dźwięku."
-          >
-            <Switch
-              checked={settings.startMuted}
-              onCheckedChange={(v) => update({ startMuted: v })}
-            />
-          </SettingsRow>
-
-          <SettingsRow
             label="Zapamiętaj głośność"
             hint="Zmiana głośności w odtwarzaczu staje się domyślną głośnością dla kolejnych okien."
           >
             <Switch
               checked={settings.rememberVolume}
               onCheckedChange={(v) => update({ rememberVolume: v })}
+            />
+          </SettingsRow>
+
+          <SettingsRow
+            label="Rozpoczynaj wyciszony"
+            hint="Nowe okna zaczynają odtwarzanie bez dźwięku."
+          >
+            <Switch
+              checked={settings.startMuted}
+              onCheckedChange={(v) => update({ startMuted: v })}
             />
           </SettingsRow>
 
@@ -175,11 +175,23 @@ export const SettingsMenu = () => {
 
           <SettingsRow
             label="Otwieraj automatycznie"
-            hint="Otwórz odtwarzacz od razu po znalezieniu strumienia na stronie."
+            hint="Otwórz odtwarzacz od razu po znalezieniu strumienia na stronie. Gdy wyłączone, otworzysz go klikając ikonę rozszerzenia."
           >
             <Switch
               checked={settings.autoOpen}
               onCheckedChange={(v) => update({ autoOpen: v })}
+            />
+          </SettingsRow>
+
+          <SettingsRow
+            label="Jakość"
+            hint="Domyślnie wybrana jakość transmisji w nowych oknach odtwarzacza."
+            stack
+          >
+            <Segment
+              value={settings.qualityMode}
+              options={QUALITY_OPTIONS}
+              onChange={(v) => update({ qualityMode: v })}
             />
           </SettingsRow>
 
@@ -204,18 +216,6 @@ export const SettingsMenu = () => {
               value={String(settings.seekStep)}
               options={SEEK_OPTIONS}
               onChange={(v) => update({ seekStep: Number(v) })}
-            />
-          </SettingsRow>
-
-          <SettingsRow
-            label="Jakość"
-            hint="Domyślny wybór jakości transmisji."
-            stack
-          >
-            <Segment
-              value={settings.qualityMode}
-              options={QUALITY_OPTIONS}
-              onChange={(v) => update({ qualityMode: v })}
             />
           </SettingsRow>
 

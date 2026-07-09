@@ -101,7 +101,7 @@ export const PlayerMenu = <T extends PlayerMenuOption>({
 }
 
 const useQualityStrategy = () => {
-  const { settings } = useSettings()
+  const { initial } = useSettings()
   const player = useMediaPlayer()
   const options = useVideoQualityOptions({ auto: false, sort: 'descending' })
   const applied = useRef(false)
@@ -114,7 +114,7 @@ const useQualityStrategy = () => {
     })
   }, [player])
 
-  const mode = settings.qualityMode
+  const mode = initial.qualityMode
 
   useEffect(() => {
     if (options.length === 0) {
