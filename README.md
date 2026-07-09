@@ -10,7 +10,7 @@
 [![Ocena Firefox](https://img.shields.io/amo/rating/odtwarzacz-dla-tvp-sport?label=ocena&color=FF7139)](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
 [![Licencja](https://img.shields.io/github/license/damian-kociszewski/tvp-sport-player?label=licencja&color=green)](LICENSE)
 
-Nieoficjalne rozszerzenie przeglądarki, które otwiera transmisje z [sport.tvp.pl](https://sport.tvp.pl) w pełnoprawnym, dopracowanym odtwarzaczu wideo.
+Nieoficjalne rozszerzenie przeglądarki, które pozwala oglądać transmisje ze [sport.tvp.pl](https://sport.tvp.pl) w wygodniejszym, bardziej funkcjonalnym odtwarzaczu.
 
 **Pobierz**: [Chrome Web Store](https://chromewebstore.google.com/detail/odtwarzacz-dla-tvp-sport/nkkeeakhllmffaanpmlpefpfagbeihma) · [Firefox Add-ons](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
 
@@ -18,18 +18,18 @@ Nieoficjalne rozszerzenie przeglądarki, które otwiera transmisje z [sport.tvp.
 
 ## Dlaczego powstało
 
-Oficjalny odtwarzacz na stronie TVP Sport ma ograniczone możliwości.
-To rozszerzenie automatycznie wykrywa transmisję na otwartej stronie i odtwarza ją we własnym odtwarzaczu, który daje pełną kontrolę nad oglądaniem.
+Domyślny odtwarzacz TVP SPORT™ ma ograniczone możliwości.
+Rozszerzenie automatycznie wykrywa strumień transmisji i otwiera go w nowym odtwarzaczu, który daje pełną kontrolę nad oglądaniem.
 
 ## Funkcje
 
-- **Jakość obrazu** — wybór ręczny lub automatyczny, z konfigurowalną jakością domyślną
-- **Ścieżka dźwiękowa i napisy** — np. komentarz angielski zamiast polskiego
-- **Skróty klawiszowe** — odtwórz / pauza, wyciszenie, przewijanie, głośność, pełny ekran, obraz w obrazie, powrót na żywo i więcej
-- **Obraz w obrazie** oraz **przesyłanie na inne urządzenia** (Cast / AirPlay)
-- **Przewijanie nagrań** z konfigurowalnym krokiem (5–60 s)
-- **Zapamiętywanie ustawień i głośności**, autoodtwarzanie, automatyczne otwieranie odtwarzacza
-- **Jasny i ciemny motyw**, a dla zaawansowanych — własny CSS
+- **Wybór jakości obrazu** (ręczny lub automatyczny) z możliwością ustawienia domyślnej jakości
+- **Wybór ścieżki dźwiękowej i napisów**, np. komentarza w języku angielskim
+- **Skróty klawiszowe** do odtwarzania, pauzy, wyciszania, przewijania, regulacji głośności i przełączania pełnego ekranu
+- **Tryb obraz w obrazie** (Picture in Picture) oraz **AirPlay** i przesyłanie obrazu na kompatybilne urządzenia
+- **Przewijanie nagrań** z możliwością ustawienia długości skoku
+- **Zapamiętywanie wybranych ustawień**
+- **Jasny i ciemny motyw** oraz możliwość dodania własnych stylów
 
 | Ustawienia | Skróty klawiszowe |
 | --- | --- |
@@ -40,7 +40,7 @@ To rozszerzenie automatycznie wykrywa transmisję na otwartej stronie i odtwarza
 - **Chrome / Edge / Brave / Opera / Vivaldi**: zainstaluj z [Chrome Web Store](https://chromewebstore.google.com/detail/odtwarzacz-dla-tvp-sport/nkkeeakhllmffaanpmlpefpfagbeihma)
 - **Firefox / LibreWolf / Zen**: zainstaluj z [Firefox Add-ons](https://addons.mozilla.org/pl/firefox/addon/odtwarzacz-dla-tvp-sport/)
 
-Wejdź na transmisję na sport.tvp.pl i rozpocznij odtwarzanie — rozszerzenie zrobi resztę.
+Po zainstalowaniu rozszerzenia wystarczy otworzyć wybraną transmisję na sport.tvp.pl i rozpocząć odtwarzanie. Reszta dzieje się automatycznie.
 
 ### Instalacja ręczna
 
@@ -60,7 +60,7 @@ npm run build:gecko    # tylko Firefox
 
 ## Prywatność
 
-Rozszerzenie nie zbiera ani nie wysyła żadnych danych — wszystko pozostaje lokalnie w Twojej przeglądarce, a transmisje pochodzą bezpośrednio z serwerów TVP. Szczegóły: [Polityka prywatności](PRIVACY.md).
+Rozszerzenie nie zbiera ani nie wysyła żadnych danych. Wszystkie operacje wykonywane są lokalnie w przeglądarce, a transmisje są odtwarzane bezpośrednio z serwerów TVP. Szczegóły: [Polityka prywatności](PRIVACY.md).
 
 ## Licencja
 
