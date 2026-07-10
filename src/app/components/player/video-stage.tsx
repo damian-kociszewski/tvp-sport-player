@@ -102,6 +102,12 @@ export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
           togglePictureInPicture: 'i',
           volumeUp: 'ArrowUp',
           volumeDown: 'ArrowDown',
+          remotePlayback: {
+            keys: 'a',
+            onKeyDown: ({ player, remote }) => {
+              if (player.state.canGoogleCast) remote.requestGoogleCast()
+            },
+          },
         }}
         onProviderChange={onProviderChange}
         onAutoPlayFail={onAutoPlayFail}

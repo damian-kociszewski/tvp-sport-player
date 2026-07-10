@@ -9,7 +9,7 @@ const LABELS = [
   'Pełny ekran',
   'Obraz w obrazie',
   'Przejdź na żywo',
-  'AirPlay / Cast',
+  'Przesyłaj na urządzenie',
   'Przewiń w tył / w przód',
   'Głośność',
 ]

@@ -27,7 +27,7 @@ const SHORTCUTS: { label: string; keys: { id: string; node: ReactNode }[] }[] =
     { label: 'Pełny ekran', keys: [{ id: 'f', node: 'F' }] },
     { label: 'Obraz w obrazie', keys: [{ id: 'i', node: 'I' }] },
     { label: 'Przejdź na żywo', keys: [{ id: 'l', node: 'L' }] },
-    { label: 'AirPlay / Cast', keys: [{ id: 'a', node: 'A' }] },
+    { label: 'Przesyłaj na urządzenie', keys: [{ id: 'a', node: 'A' }] },
     {
       label: 'Przewiń w tył / w przód',
       keys: [

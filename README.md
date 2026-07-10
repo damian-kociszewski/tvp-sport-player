@@ -26,7 +26,7 @@ Rozszerzenie automatycznie wykrywa strumień transmisji i otwiera go w nowym odt
 - **Wybór jakości obrazu** (ręczny lub automatyczny) z możliwością ustawienia domyślnej jakości
 - **Wybór ścieżki dźwiękowej i napisów**, np. komentarza w języku angielskim
 - **Skróty klawiszowe** do odtwarzania, pauzy, wyciszania, przewijania, regulacji głośności i przełączania pełnego ekranu
-- **Tryb obraz w obrazie** (Picture in Picture) oraz **AirPlay** i przesyłanie obrazu na kompatybilne urządzenia
+- **Tryb obraz w obrazie** (Picture in Picture) oraz przesyłanie obrazu na kompatybilne urządzenia (Google Cast)
 - **Przewijanie nagrań** z możliwością ustawienia długości skoku
 - **Zapamiętywanie wybranych ustawień**
 - **Jasny i ciemny motyw** oraz możliwość dodania własnych stylów
@@ -56,6 +56,16 @@ npm run dev            # tryb deweloperski (Chromium)
 npm run build          # build obu wersji: dist/chromium/ i dist/gecko/
 npm run build:chromium # tylko Chromium
 npm run build:gecko    # tylko Firefox
+```
+
+### Aktualizacja bibliotek Google Cast
+
+Pliki w `public/vendor/` to lokalne, niezmodyfikowane kopie Google Cast SDK (Manifest V3 nie
+pozwala ładować zdalnych skryptów na stronach rozszerzenia).
+
+```bash
+curl -sf "https://www.gstatic.com/eureka/clank/cast_sender.js" -o public/vendor/cast_sender.js
+curl -sf "https://www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js" -o public/vendor/cast_framework.js
 ```
 
 ## Prywatność
