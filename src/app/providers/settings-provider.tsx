@@ -20,11 +20,7 @@ export interface SettingsState {
   update: (patch: Partial<PlayerSettings>) => void
 }
 
-export const SettingsContext = createContext<SettingsState>({
-  settings: DEFAULT_SETTINGS,
-  initial: DEFAULT_SETTINGS,
-  update: () => {},
-})
+export const SettingsContext = createContext<SettingsState | null>(null)
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [settings, setSettings] = useState<PlayerSettings>(DEFAULT_SETTINGS)
