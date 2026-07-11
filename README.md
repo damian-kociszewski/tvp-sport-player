@@ -45,8 +45,8 @@ Po zainstalowaniu rozszerzenia wystarczy otworzyć wybraną transmisję na sport
 ### Instalacja ręczna
 
 1. Zbuduj rozszerzenie (poniżej) albo pobierz paczkę z [wydań](https://github.com/damian-kociszewski/tvp-sport-player/releases).
-2. **Chrome / Edge / Brave / Opera / Vivaldi**: `chrome://extensions` → włącz „Tryb dewelopera" → „Załaduj rozpakowane" → wskaż katalog `dist/chromium`.
-3. **Firefox / LibreWolf / Zen**: `about:debugging#/runtime/this-firefox` → „Załaduj tymczasowy dodatek" → wskaż `dist/gecko/manifest.json`. Następnie w `about:addons` nadaj rozszerzeniu uprawnienia do witryn tvp.pl i redcdn.pl.
+2. **Chrome / Edge / Brave / Opera / Vivaldi**: `chrome://extensions` → włącz "Tryb dewelopera" → "Załaduj rozpakowane" → wskaż katalog `dist/chromium`.
+3. **Firefox / LibreWolf / Zen**: `about:debugging#/runtime/this-firefox` → "Załaduj tymczasowy dodatek" → wskaż `dist/gecko/manifest.json`. Następnie w `about:addons` nadaj rozszerzeniu uprawnienia do witryn tvp.pl i redcdn.pl.
 
 ## Rozwój
 
@@ -60,8 +60,7 @@ npm run build:gecko    # tylko Firefox
 
 ### Aktualizacja bibliotek Google Cast
 
-Pliki w `public/vendor/` to lokalne, niezmodyfikowane kopie Google Cast SDK (Manifest V3 nie
-pozwala ładować zdalnych skryptów na stronach rozszerzenia).
+Pliki w `public/vendor/` to lokalne, niezmodyfikowane kopie Google Cast SDK.
 
 ```bash
 curl -sf "https://www.gstatic.com/eureka/clank/cast_sender.js" -o public/vendor/cast_sender.js
@@ -76,4 +75,4 @@ Rozszerzenie nie zbiera ani nie wysyła żadnych danych. Wszystkie operacje wyko
 
 [MIT](LICENSE)
 
-Rozszerzenie nie jest powiązane, sponsorowane ani autoryzowane przez Telewizję Polską S.A. Nazwa „TVP SPORT", logo oraz treść transmisji są własnością ich właścicieli.
+Rozszerzenie nie jest powiązane, sponsorowane ani autoryzowane przez Telewizję Polską S.A. Nazwa "TVP SPORT", logo oraz treść transmisji są własnością ich właścicieli.
