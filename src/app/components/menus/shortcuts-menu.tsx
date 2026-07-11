@@ -9,42 +9,66 @@ import type { ReactNode } from 'react'
 import { MenuHeader } from '@/app/components/menus/menu-header'
 import { NavMenu, NavMenuContent } from '@/app/components/menus/nav-menu'
 import { Kbd } from '@/app/components/ui/kbd'
+import { useCanCast } from '@/app/hooks/useCanCast'
+import { useCanPip } from '@/app/hooks/useCanPip'
 
 const arrow = (Icon: typeof ArrowLeftIcon) => (
   <Icon className="size-3.25" weight="bold" />
 )
 
-const SHORTCUTS: { label: string; keys: { id: string; node: ReactNode }[] }[] =
-  [
-    {
-      label: 'Odtwórz / pauza',
-      keys: [
-        { id: 'space', node: 'Spacja' },
-        { id: 'k', node: 'K' },
-      ],
-    },
-    { label: 'Wycisz / odcisz', keys: [{ id: 'm', node: 'M' }] },
-    { label: 'Pełny ekran', keys: [{ id: 'f', node: 'F' }] },
-    { label: 'Obraz w obrazie', keys: [{ id: 'i', node: 'I' }] },
-    { label: 'Przejdź na żywo', keys: [{ id: 'l', node: 'L' }] },
-    { label: 'Przesyłaj na urządzenie', keys: [{ id: 'a', node: 'A' }] },
-    {
-      label: 'Przewiń w tył / w przód',
-      keys: [
-        { id: 'left', node: arrow(ArrowLeftIcon) },
-        { id: 'right', node: arrow(ArrowRightIcon) },
-      ],
-    },
-    {
-      label: 'Głośność',
-      keys: [
-        { id: 'up', node: arrow(ArrowUpIcon) },
-        { id: 'down', node: arrow(ArrowDownIcon) },
-      ],
-    },
-  ]
+const SHORTCUTS: {
+  id: string
+  label: string
+  keys: { id: string; node: ReactNode }[]
+}[] = [
+  {
+    id: 'play-pause',
+    label: 'Odtwórz / pauza',
+    keys: [
+      { id: 'space', node: 'Spacja' },
+      { id: 'k', node: 'K' },
+    ],
+  },
+  {
+    id: 'mute-unmute',
+    label: 'Wycisz / odcisz',
+    keys: [{ id: 'm', node: 'M' }],
+  },
+  { id: 'fullscreen', label: 'Pełny ekran', keys: [{ id: 'f', node: 'F' }] },
+  { id: 'pip', label: 'Obraz w obrazie', keys: [{ id: 'i', node: 'I' }] },
+  { id: 'live', label: 'Przejdź na żywo', keys: [{ id: 'l', node: 'L' }] },
+  {
+    id: 'cast',
+    label: 'Przesyłaj na urządzenie',
+    keys: [{ id: 'a', node: 'A' }],
+  },
+  {
+    id: 'seek',
+    label: 'Przewiń w tył / w przód',
+    keys: [
+      { id: 'left', node: arrow(ArrowLeftIcon) },
+      { id: 'right', node: arrow(ArrowRightIcon) },
+    ],
+  },
+  {
+    id: 'volume',
+    label: 'Głośność',
+    keys: [
+      { id: 'up', node: arrow(ArrowUpIcon) },
+      { id: 'down', node: arrow(ArrowDownIcon) },
+    ],
+  },
+]
 
 export const ShortcutsMenu = () => {
+  const canCast = useCanCast()
+  const canPip = useCanPip()
+  const shortcuts = SHORTCUTS.filter((s) => {
+    if (s.id === 'cast') return canCast
+    if (s.id === 'pip') return canPip
+    return true
+  })
+
   return (
     <NavMenu
       id="tvp-menu-shortcuts"
@@ -54,9 +78,9 @@ export const ShortcutsMenu = () => {
     >
       <MenuHeader title="Skróty klawiszowe" />
       <NavMenuContent>
-        {SHORTCUTS.map((s) => (
+        {shortcuts.map((s) => (
           <div
-            key={s.label}
+            key={s.id}
             className="flex items-center justify-between gap-4 px-3 py-2"
           >
             <span className="text-[13px]">{s.label}</span>

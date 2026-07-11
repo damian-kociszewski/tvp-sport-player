@@ -14,6 +14,7 @@ import { PlaybackLogger } from '@/app/components/player/playback-logger'
 import { PlayerControls } from '@/app/components/player/player-controls'
 import { StreamInfo } from '@/app/components/player/stream-info'
 import { suppressMutedSave } from '@/app/components/player/volume-control'
+import { setPlayerInstance } from '@/app/hooks/usePlayerState'
 import { useSettings } from '@/app/hooks/useSettings'
 import { logger } from '@/shared/logger'
 import type { StreamPayload } from '@/shared/stream'
@@ -86,10 +87,14 @@ export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
     <>
       <MediaPlayer
         id="tvp-player"
-        ref={playerRef}
+        ref={(player) => {
+          playerRef.current = player
+          setPlayerInstance(player)
+        }}
         className="group relative aspect-video w-full overflow-hidden border bg-[#0c0b0a] font-sans"
         src={{ src: payload.src, type: 'application/x-mpegurl' }}
         title={payload.title}
+        artwork={[]}
         autoPlay={initial.autoplay}
         volume={initial.defaultVolume}
         muted={initial.startMuted}
@@ -98,7 +103,13 @@ export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
           togglePaused: 'k Space',
           toggleMuted: 'm',
           toggleFullscreen: 'f',
-          togglePictureInPicture: 'i',
+          togglePictureInPicture: {
+            keys: 'i',
+            onKeyDown: ({ player, remote }) => {
+              if (player.state.canPictureInPicture)
+                remote.togglePictureInPicture()
+            },
+          },
           volumeUp: 'ArrowUp',
           volumeDown: 'ArrowDown',
           remotePlayback: {

@@ -3,18 +3,18 @@ import {
   GoogleCastButton,
   type GoogleCastPromptErrorEvent,
   useMediaPlayer,
-  useMediaState,
 } from '@vidstack/react'
 import { useEffect } from 'react'
+import { useCanCast } from '@/app/hooks/useCanCast'
 import { loadCastSdk } from '@/lib/google-cast-sdk'
 import { logger } from '@/shared/logger'
 
 export const RemotePlaybackButton = () => {
   const player = useMediaPlayer()
-  const canGoogleCast = useMediaState('canGoogleCast')
+  const canCast = useCanCast()
 
   useEffect(() => {
-    if (!canGoogleCast || !__CAST_AVAILABLE__ || !player) return
+    if (!canCast || !player) return
     void loadCastSdk()
     const onError = (event: Event) => {
       const { detail } = event as GoogleCastPromptErrorEvent
@@ -22,10 +22,9 @@ export const RemotePlaybackButton = () => {
     }
     player.addEventListener('google-cast-prompt-error', onError)
     return () => player.removeEventListener('google-cast-prompt-error', onError)
-  }, [canGoogleCast, player])
+  }, [canCast, player])
 
-  if (!canGoogleCast) return null
-  if (!__CAST_AVAILABLE__) return null
+  if (!canCast) return null
 
   return (
     <GoogleCastButton

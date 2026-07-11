@@ -1,9 +1,10 @@
 import { PictureInPictureIcon } from '@phosphor-icons/react'
-import { PIPButton, useMediaState } from '@vidstack/react'
+import { PIPButton } from '@vidstack/react'
 import { useEffect } from 'react'
+import { useCanPip } from '@/app/hooks/useCanPip'
 
 export const PipButton = () => {
-  const canPip = useMediaState('canPictureInPicture')
+  const canPip = useCanPip()
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
