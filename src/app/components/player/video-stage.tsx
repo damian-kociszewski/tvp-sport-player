@@ -90,7 +90,6 @@ export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
         className="group relative aspect-video w-full overflow-hidden border bg-[#0c0b0a] font-sans"
         src={{ src: payload.src, type: 'application/x-mpegurl' }}
         title={payload.title}
-        artwork={[]}
         autoPlay={initial.autoplay}
         volume={initial.defaultVolume}
         muted={initial.startMuted}
@@ -105,7 +104,10 @@ export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
           remotePlayback: {
             keys: 'a',
             onKeyDown: ({ player, remote }) => {
-              if (player.state.canGoogleCast) remote.requestGoogleCast()
+              if (!player.state.canGoogleCast) return
+              if (!__CAST_AVAILABLE__) return
+
+              remote.requestGoogleCast()
             },
           },
         }}

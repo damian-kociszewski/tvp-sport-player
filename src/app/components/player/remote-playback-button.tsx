@@ -14,7 +14,7 @@ export const RemotePlaybackButton = () => {
   const canGoogleCast = useMediaState('canGoogleCast')
 
   useEffect(() => {
-    if (!canGoogleCast || !player) return
+    if (!canGoogleCast || !__CAST_AVAILABLE__ || !player) return
     void loadCastSdk()
     const onError = (event: Event) => {
       const { detail } = event as GoogleCastPromptErrorEvent
@@ -25,6 +25,8 @@ export const RemotePlaybackButton = () => {
   }, [canGoogleCast, player])
 
   if (!canGoogleCast) return null
+  if (!__CAST_AVAILABLE__) return null
+
   return (
     <GoogleCastButton
       id="tvp-btn-remote"
