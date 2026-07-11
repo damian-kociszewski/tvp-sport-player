@@ -8,7 +8,7 @@ beforeAll(async () => {
   ;({ parseTitle } = await import('@/background'))
 })
 
-const FALLBACK = { title: 'Transmisja TVP Sport™', subtitle: '' }
+const FALLBACK = { title: 'Transmisja TVP SPORT™', subtitle: '' }
 
 describe('parseTitle', () => {
   it('falls back when the title is missing', () => {

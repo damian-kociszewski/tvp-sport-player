@@ -247,7 +247,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 export const parseTitle = (
   raw?: string,
 ): { title: string; subtitle: string } => {
-  const fallback = { title: 'Transmisja TVP Sport™', subtitle: '' }
+  const fallback = { title: 'Transmisja TVP SPORT™', subtitle: '' }
   if (!raw) return fallback
 
   let text = raw

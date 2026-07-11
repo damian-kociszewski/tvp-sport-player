@@ -18,7 +18,7 @@ Nieoficjalne rozszerzenie przeglądarki, które pozwala oglądać transmisje ze 
 
 ## Dlaczego powstało
 
-Domyślny odtwarzacz TVP SPORT™ ma ograniczone możliwości.
+Domyślny odtwarzacz TVP SPORT ma ograniczone możliwości.
 Rozszerzenie automatycznie wykrywa strumień transmisji i otwiera go w nowym odtwarzaczu, który daje pełną kontrolę nad oglądaniem.
 
 ## Funkcje

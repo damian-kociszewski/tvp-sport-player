@@ -13,7 +13,7 @@ const MESSAGES: Record<PlayerError, { title: string; detail: string }> = {
   expired: {
     title: 'Link do transmisji wygasł',
     detail:
-      'Wróć na stronę TVP Sport™, odśwież ją i otwórz odtwarzacz ponownie.',
+      'Wróć na stronę TVP SPORT, odśwież ją i otwórz odtwarzacz ponownie.',
   },
   network: {
     title: 'Nie udało się załadować transmisji',
@@ -21,7 +21,7 @@ const MESSAGES: Record<PlayerError, { title: string; detail: string }> = {
   },
   missing: {
     title: 'Brak danych transmisji',
-    detail: 'Otwórz odtwarzacz z ikony rozszerzenia na stronie sport.tvp.pl',
+    detail: 'Otwórz odtwarzacz z ikony rozszerzenia na stronie TVP SPORT',
   },
 }
 
@@ -49,7 +49,7 @@ export const ErrorOverlay = ({
           href={sourceUrl}
           className="mt-2 border border-[#2c2925] bg-[#1d1b18] px-3.5 py-2 font-mono text-xs text-[#f2efe9] hover:border-primary"
         >
-          Otwórz stronę transmisji TVP Sport™
+          Otwórz stronę transmisji TVP SPORT
         </a>
       )}
     </div>
