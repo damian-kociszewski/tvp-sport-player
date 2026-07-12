@@ -10,8 +10,9 @@ import {
   DEFAULT_SETTINGS,
   loadSettings,
   type PlayerSettings,
-  SETTINGS_KEY,
+  SETTING_KEYS,
   saveSettings,
+  settingKeyOf,
 } from '@/shared/settings'
 
 export interface SettingsState {
@@ -39,12 +40,16 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
       changes: Record<string, chrome.storage.StorageChange>,
       area: string,
     ) => {
-      if (area === 'local' && changes[SETTINGS_KEY]?.newValue) {
-        setSettings({
-          ...DEFAULT_SETTINGS,
-          ...(changes[SETTINGS_KEY].newValue as Partial<PlayerSettings>),
-        })
+      if (area !== 'local') return
+      const patch: Partial<PlayerSettings> = {}
+      for (const key of SETTING_KEYS) {
+        const change = changes[settingKeyOf(key)]
+        if (!change) continue
+        ;(patch as Record<keyof PlayerSettings, unknown>)[key] =
+          change.newValue ?? DEFAULT_SETTINGS[key]
       }
+      if (Object.keys(patch).length === 0) return
+      setSettings((prev) => ({ ...prev, ...patch }))
     }
     chrome.storage.onChanged.addListener(onChange)
     return () => chrome.storage.onChanged.removeListener(onChange)

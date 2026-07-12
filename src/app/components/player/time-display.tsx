@@ -1,9 +1,10 @@
 import { Time, useMediaState } from '@vidstack/react'
 
 export const TimeDisplay = () => {
+  const live = useMediaState('live')
   const start = useMediaState('seekableStart')
   const end = useMediaState('seekableEnd')
-  if (end - start < 5) return null
+  if (live || end - start < 5) return null
 
   return (
     <div

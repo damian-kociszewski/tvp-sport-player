@@ -2,8 +2,8 @@ import { act, cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CustomCss } from '@/app/components/core/custom-css'
 import { SettingsProvider } from '@/app/providers/settings-provider'
-import { SETTINGS_KEY } from '@/shared/settings'
-import { createChromeMock } from '@/test/chrome-mock'
+import { settingKeyOf } from '@/shared/settings'
+import { createChromeMock, seedSettings } from '@/test/chrome-mock'
 
 afterEach(() => {
   cleanup()
@@ -13,7 +13,7 @@ afterEach(() => {
 describe('CustomCss', () => {
   it('injects the custom css from settings into a style element', async () => {
     const { chrome: mock, local } = createChromeMock()
-    local.data.set(SETTINGS_KEY, { customCss: 'body { color: red; }' })
+    seedSettings(local, { customCss: 'body { color: red; }' })
     vi.stubGlobal('chrome', mock)
     const { container } = render(
       <SettingsProvider>
@@ -38,7 +38,7 @@ describe('CustomCss', () => {
     expect(container.querySelector('style')?.textContent).toBe('')
     act(() =>
       emitStorageChange(
-        { [SETTINGS_KEY]: { newValue: { customCss: '.a { opacity: 1; }' } } },
+        { [settingKeyOf('customCss')]: { newValue: '.a { opacity: 1; }' } },
         'local',
       ),
     )

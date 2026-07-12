@@ -13,7 +13,7 @@ export const useStreamPayload = (): StreamPayloadState => {
   useEffect(() => {
     const params = new URLSearchParams(location.search)
 
-    const src = params.get('src')
+    const src = import.meta.env.DEV ? params.get('src') : null
     if (src) {
       const payload: StreamPayload = {
         src,

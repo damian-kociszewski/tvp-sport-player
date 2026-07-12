@@ -1,4 +1,4 @@
-import { Controls, useMediaState } from '@vidstack/react'
+import { Controls } from '@vidstack/react'
 import { FullscreenButton } from '@/app/components/player/fullscreen-button'
 import { LiveButton } from '@/app/components/player/live-button'
 import { PipButton } from '@/app/components/player/pip-button'
@@ -15,32 +15,26 @@ import { TimeDisplay } from '@/app/components/player/time-display'
 import { VolumeControl } from '@/app/components/player/volume-control'
 
 export const PlayerControls = () => {
-  const live = useMediaState('live')
-
   return (
     <Controls.Root
       id="tvp-controls"
-      className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-linear-to-t from-black/75 to-transparent px-3.5 pb-3 pt-10 opacity-0 transition-opacity duration-200 data-visible:opacity-100"
+      className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 bg-black/60 px-4 py-3 opacity-0 transition-opacity duration-200 data-visible:opacity-100 group-data-fullscreen:px-4! group-data-fullscreen:py-3!"
     >
       <SeekKeys />
 
-      {!live && (
-        <Controls.Group id="tvp-controls-seek" className="flex w-full">
-          <SeekBar />
-        </Controls.Group>
-      )}
+      <SeekBar />
 
       <Controls.Group
         id="tvp-controls-main"
         className="flex w-full items-center gap-1.5"
       >
-        {!live && <SeekButton dir={-1} />}
+        <SeekButton dir={-1} />
         <PlayPauseButton />
-        {!live && <SeekButton dir={1} />}
+        <SeekButton dir={1} />
 
         <VolumeControl />
         <LiveButton />
-        {!live && <TimeDisplay />}
+        <TimeDisplay />
 
         <div className="flex-1" />
 

@@ -10,8 +10,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SettingsMenu } from '@/app/components/menus/settings-menu'
 import { TooltipProvider } from '@/app/components/ui/tooltip'
 import { SettingsProvider } from '@/app/providers/settings-provider'
-import { DEFAULT_SETTINGS, SETTINGS_KEY } from '@/shared/settings'
-import { createChromeMock } from '@/test/chrome-mock'
+import { DEFAULT_SETTINGS, type PlayerSettings } from '@/shared/settings'
+import {
+  createChromeMock,
+  seedSettings,
+  storedSettings,
+} from '@/test/chrome-mock'
 
 const openMenu = async () => {
   render(
@@ -49,12 +53,12 @@ describe('SettingsMenu', () => {
     await openMenu()
     fireEvent.click(rowSwitch('Autoodtwarzanie'))
     await act(async () => {})
-    expect(local.data.get(SETTINGS_KEY)).toMatchObject({ autoplay: false })
+    expect(storedSettings(local)).toEqual({ autoplay: false })
   })
 
   it('reflects stored settings in the controls', async () => {
     const { chrome: mock, local } = createChromeMock()
-    local.data.set(SETTINGS_KEY, { startMuted: true })
+    seedSettings(local, { startMuted: true })
     vi.stubGlobal('chrome', mock)
     await openMenu()
     const control = rowSwitch('Rozpoczynaj wyciszony')
@@ -67,9 +71,7 @@ describe('SettingsMenu', () => {
     await openMenu()
     fireEvent.click(screen.getByRole('radio', { name: 'Najwyższa' }))
     await act(async () => {})
-    expect(local.data.get(SETTINGS_KEY)).toMatchObject({
-      qualityMode: 'highest',
-    })
+    expect(storedSettings(local)).toEqual({ qualityMode: 'highest' })
   })
 
   it('changes the seek step and persists it as a number', async () => {
@@ -78,16 +80,58 @@ describe('SettingsMenu', () => {
     await openMenu()
     fireEvent.click(screen.getByRole('radio', { name: '60s' }))
     await act(async () => {})
-    expect(local.data.get(SETTINGS_KEY)).toMatchObject({ seekStep: 60 })
+    expect(storedSettings(local)).toEqual({ seekStep: 60 })
   })
+
+  const SWITCHES: [string, keyof PlayerSettings][] = [
+    ['Zapamiętaj głośność', 'rememberVolume'],
+    ['Rozpoczynaj wyciszony', 'startMuted'],
+    ['Autoodtwarzanie', 'autoplay'],
+    ['Otwieraj automatycznie', 'autoOpen'],
+  ]
+
+  for (const [label, key] of SWITCHES) {
+    it(`toggling the ${key} switch writes ${key} and nothing else`, async () => {
+      const { chrome: mock, local } = createChromeMock()
+      vi.stubGlobal('chrome', mock)
+      await openMenu()
+      fireEvent.click(rowSwitch(label))
+      await act(async () => {})
+      expect(storedSettings(local)).toEqual({
+        [key]: !DEFAULT_SETTINGS[key],
+      })
+    })
+
+    it(`toggling the ${key} switch leaves other stored settings untouched`, async () => {
+      const stored: Partial<PlayerSettings> = {
+        ...DEFAULT_SETTINGS,
+        defaultVolume: 0.55,
+        seekStep: 30,
+        theme: 'dark',
+        qualityMode: 'highest',
+        clickAction: 'playPause',
+        customCss: '.x{}',
+      }
+      const { chrome: mock, local } = createChromeMock()
+      seedSettings(local, stored)
+      vi.stubGlobal('chrome', mock)
+      await openMenu()
+      fireEvent.click(rowSwitch(label))
+      await act(async () => {})
+      expect(storedSettings(local)).toEqual({
+        ...stored,
+        [key]: !DEFAULT_SETTINGS[key],
+      })
+    })
+  }
 
   it('resets settings to defaults', async () => {
     const { chrome: mock, local } = createChromeMock()
-    local.data.set(SETTINGS_KEY, { theme: 'dark', seekStep: 60 })
+    seedSettings(local, { theme: 'dark', seekStep: 60 })
     vi.stubGlobal('chrome', mock)
     await openMenu()
     fireEvent.click(screen.getByRole('button', { name: /Resetuj ustawienia/ }))
     await act(async () => {})
-    expect(local.data.get(SETTINGS_KEY)).toEqual(DEFAULT_SETTINGS)
+    expect(storedSettings(local)).toEqual(DEFAULT_SETTINGS)
   })
 })

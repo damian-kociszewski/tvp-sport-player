@@ -11,6 +11,7 @@ const stubSearch = (params: Record<string, string>) => {
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  vi.unstubAllEnvs()
 })
 
 describe('useStreamPayload', () => {
@@ -43,6 +44,14 @@ describe('useStreamPayload', () => {
     expect(result.current).toMatchObject({
       payload: { title: 'Transmisja', subtitle: '' },
     })
+  })
+
+  it('ignores the src param outside dev builds', async () => {
+    vi.stubEnv('DEV', false)
+    stubSearch({ src: 'https://example.com/stream.m3u8', title: 'Mecz' })
+    const { result } = renderHook(() => useStreamPayload())
+    await act(async () => {})
+    expect(result.current.status).toBe('missing')
   })
 
   it('reports missing without src and id params', async () => {

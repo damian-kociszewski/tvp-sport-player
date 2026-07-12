@@ -12,7 +12,6 @@ import { PlayerErrorOverlay } from '@/app/components/player/error-overlay'
 import { PlaybackLogger } from '@/app/components/player/playback-logger'
 import { PlayerControls } from '@/app/components/player/player-controls'
 import { StreamInfo } from '@/app/components/player/stream-info'
-import { suppressMutedSave } from '@/app/components/player/volume-control'
 import { setPlayerInstance } from '@/app/hooks/usePlayerState'
 import { useSettings } from '@/app/hooks/useSettings'
 import { logger } from '@/shared/logger'
@@ -42,14 +41,12 @@ export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
       logger.warn('player', 'autoplay retry failed (muted)')
       return
     }
-    suppressMutedSave.current = true
     player.muted = true
     try {
       await player.play()
       logger.info('player', 'autoplay retried without sound')
     } catch (e) {
       player.muted = false
-      suppressMutedSave.current = false
       logger.warn(
         'player',
         'autoplay retry failed',

@@ -34,6 +34,8 @@ export const SeekButton = ({ dir }: { dir: -1 | 1 }) => {
   const { settings } = useSettings()
   const step = settings.seekStep
   const player = useMediaPlayer()
+  const live = useMediaState('live')
+  if (live) return null
   const label =
     dir < 0 ? `Przewiń o ${step}s do tyłu` : `Przewiń o ${step}s do przodu`
   return (

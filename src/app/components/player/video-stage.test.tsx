@@ -16,6 +16,9 @@ type ShortcutHandler = (context: {
 
 type CapturedProps = {
   artwork: unknown
+  autoPlay: boolean
+  volume: number
+  muted: boolean
   keyShortcuts: {
     togglePictureInPicture: { keys: string; onKeyDown: ShortcutHandler }
     remotePlayback: { keys: string; onKeyDown: ShortcutHandler }
@@ -60,13 +63,10 @@ vi.mock('@/app/components/player/player-controls', () => ({
 vi.mock('@/app/components/player/stream-info', () => ({
   StreamInfo: () => null,
 }))
-vi.mock('@/app/components/player/volume-control', () => ({
-  suppressMutedSave: { current: false },
-}))
 vi.mock('@/app/hooks/usePlayerState', () => ({ setPlayerInstance }))
 vi.mock('@/app/hooks/useSettings', () => ({
   useSettings: () => ({
-    initial: { autoplay: false, defaultVolume: 0.2, startMuted: false },
+    initial: { autoplay: false, defaultVolume: 0.35, startMuted: true },
   }),
 }))
 
@@ -93,6 +93,12 @@ beforeEach(() => {
 describe('VideoStage', () => {
   it('passes empty artwork so media session gets no invalid image url', () => {
     expect(captured.props?.artwork).toEqual([])
+  })
+
+  it('starts the player from the initial settings snapshot', () => {
+    expect(captured.props?.autoPlay).toBe(false)
+    expect(captured.props?.volume).toBe(0.35)
+    expect(captured.props?.muted).toBe(true)
   })
 
   it('registers the player instance for out-of-tree hooks', () => {

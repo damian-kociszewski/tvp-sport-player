@@ -13,27 +13,22 @@ import { useEffect, useRef } from 'react'
 import { useSettings } from '@/app/hooks/useSettings'
 import { saveSettings } from '@/shared/settings'
 
-export const suppressMutedSave = { current: false }
-
 const VolumeMemory = () => {
   const { settings } = useSettings()
-  const { volume, muted } = useMediaStore()
-  const primed = useRef(false)
+  const { volume } = useMediaStore()
+  const previous = useRef<number | null>(null)
 
   useEffect(() => {
-    if (!primed.current) {
-      primed.current = true
-      return
-    }
+    const last = previous.current
+    previous.current = volume
+    if (last === null || last === volume) return
     if (!settings.rememberVolume) return
-    if (!muted) suppressMutedSave.current = false
-    if (muted && suppressMutedSave.current) return
     const id = setTimeout(
-      () => void saveSettings({ defaultVolume: volume, startMuted: muted }),
+      () => void saveSettings({ defaultVolume: volume }),
       300,
     )
     return () => clearTimeout(id)
-  }, [volume, muted, settings.rememberVolume])
+  }, [volume, settings.rememberVolume])
 
   return null
 }

@@ -1,11 +1,16 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   DEFAULT_SETTINGS,
+  LEGACY_SETTINGS_KEY,
   loadSettings,
-  SETTINGS_KEY,
   saveSettings,
+  settingKeyOf,
 } from '@/shared/settings'
-import { createChromeMock } from '@/test/chrome-mock'
+import {
+  createChromeMock,
+  seedSettings,
+  storedSettings,
+} from '@/test/chrome-mock'
 
 afterEach(() => {
   vi.unstubAllGlobals()
@@ -27,15 +32,37 @@ describe('loadSettings', () => {
     expect(await loadSettings()).toEqual(DEFAULT_SETTINGS)
   })
 
-  it('merges a stored partial over defaults', async () => {
+  it('merges stored per-key values over defaults', async () => {
     const { chrome: mock, local } = createChromeMock()
-    local.data.set(SETTINGS_KEY, { theme: 'dark', seekStep: 30 })
+    seedSettings(local, { theme: 'dark', seekStep: 30 })
     vi.stubGlobal('chrome', mock)
     expect(await loadSettings()).toEqual({
       ...DEFAULT_SETTINGS,
       theme: 'dark',
       seekStep: 30,
     })
+  })
+
+  it('keeps falsy stored values instead of defaults', async () => {
+    const { chrome: mock, local } = createChromeMock()
+    seedSettings(local, { defaultVolume: 0, autoplay: false, customCss: '' })
+    vi.stubGlobal('chrome', mock)
+    const settings = await loadSettings()
+    expect(settings.defaultVolume).toBe(0)
+    expect(settings.autoplay).toBe(false)
+  })
+
+  it('migrates a legacy settings object to per-key entries', async () => {
+    const { chrome: mock, local } = createChromeMock()
+    local.data.set(LEGACY_SETTINGS_KEY, { theme: 'dark', startMuted: true })
+    vi.stubGlobal('chrome', mock)
+    expect(await loadSettings()).toEqual({
+      ...DEFAULT_SETTINGS,
+      theme: 'dark',
+      startMuted: true,
+    })
+    expect(local.data.has(LEGACY_SETTINGS_KEY)).toBe(false)
+    expect(storedSettings(local)).toEqual({ theme: 'dark', startMuted: true })
   })
 })
 
@@ -44,14 +71,39 @@ describe('saveSettings', () => {
     await expect(saveSettings({ theme: 'dark' })).resolves.toBeUndefined()
   })
 
-  it('persists the patch merged with current settings', async () => {
+  it('writes only the keys present in the patch', async () => {
     const { chrome: mock, local } = createChromeMock()
     vi.stubGlobal('chrome', mock)
     await saveSettings({ theme: 'light', defaultVolume: 0.5 })
-    expect(local.data.get(SETTINGS_KEY)).toEqual({
-      ...DEFAULT_SETTINGS,
+    expect(storedSettings(local)).toEqual({
       theme: 'light',
       defaultVolume: 0.5,
+    })
+    expect(local.data.size).toBe(2)
+  })
+
+  it('never rewrites settings outside the patch', async () => {
+    const { chrome: mock, local } = createChromeMock()
+    seedSettings(local, { startMuted: true, rememberVolume: true })
+    vi.stubGlobal('chrome', mock)
+    await saveSettings({ defaultVolume: 0.7 })
+    expect(storedSettings(local)).toEqual({
+      startMuted: true,
+      rememberVolume: true,
+      defaultVolume: 0.7,
+    })
+  })
+
+  it('does not lose either write when two saves race', async () => {
+    const { chrome: mock, local } = createChromeMock()
+    vi.stubGlobal('chrome', mock)
+    await Promise.all([
+      saveSettings({ defaultVolume: 0.9 }),
+      saveSettings({ startMuted: true }),
+    ])
+    expect(storedSettings(local)).toEqual({
+      defaultVolume: 0.9,
+      startMuted: true,
     })
   })
 
@@ -60,10 +112,12 @@ describe('saveSettings', () => {
     vi.stubGlobal('chrome', mock)
     await saveSettings({ theme: 'dark' })
     await saveSettings({ seekStep: 5 })
-    expect(local.data.get(SETTINGS_KEY)).toEqual({
-      ...DEFAULT_SETTINGS,
-      theme: 'dark',
-      seekStep: 5,
-    })
+    expect(storedSettings(local)).toEqual({ theme: 'dark', seekStep: 5 })
+  })
+})
+
+describe('settingKeyOf', () => {
+  it('namespaces each setting under its own storage key', () => {
+    expect(settingKeyOf('startMuted')).toBe('settings.startMuted')
   })
 })
