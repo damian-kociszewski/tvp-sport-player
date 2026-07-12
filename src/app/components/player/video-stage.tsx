@@ -7,7 +7,6 @@ import {
 } from '@vidstack/react'
 import HLS from 'hls.js'
 import { useRef } from 'react'
-import { CenterPlayButton } from '@/app/components/player/center-play-button'
 import { ClickGesture } from '@/app/components/player/click-gesture'
 import { PlayerErrorOverlay } from '@/app/components/player/error-overlay'
 import { PlaybackLogger } from '@/app/components/player/playback-logger'
@@ -128,7 +127,6 @@ export const VideoStage = ({ payload }: { payload: StreamPayload }) => {
         <MediaProvider />
         <ClickGesture />
         <PlaybackLogger />
-        <CenterPlayButton />
         <PlayerControls />
         <PlayerErrorOverlay />
       </MediaPlayer>

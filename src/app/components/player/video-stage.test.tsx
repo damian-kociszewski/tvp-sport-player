@@ -45,9 +45,6 @@ vi.mock('@vidstack/react', () => ({
 
 vi.mock('hls.js', () => ({ default: class {} }))
 
-vi.mock('@/app/components/player/center-play-button', () => ({
-  CenterPlayButton: () => null,
-}))
 vi.mock('@/app/components/player/click-gesture', () => ({
   ClickGesture: () => null,
 }))
