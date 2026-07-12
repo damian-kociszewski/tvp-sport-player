@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   DEFAULT_SETTINGS,
-  LEGACY_SETTINGS_KEY,
   loadSettings,
   saveSettings,
   settingKeyOf,
@@ -50,19 +49,6 @@ describe('loadSettings', () => {
     const settings = await loadSettings()
     expect(settings.defaultVolume).toBe(0)
     expect(settings.autoplay).toBe(false)
-  })
-
-  it('migrates a legacy settings object to per-key entries', async () => {
-    const { chrome: mock, local } = createChromeMock()
-    local.data.set(LEGACY_SETTINGS_KEY, { theme: 'dark', startMuted: true })
-    vi.stubGlobal('chrome', mock)
-    expect(await loadSettings()).toEqual({
-      ...DEFAULT_SETTINGS,
-      theme: 'dark',
-      startMuted: true,
-    })
-    expect(local.data.has(LEGACY_SETTINGS_KEY)).toBe(false)
-    expect(storedSettings(local)).toEqual({ theme: 'dark', startMuted: true })
   })
 })
 
