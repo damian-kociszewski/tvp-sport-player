@@ -5,4 +5,5 @@ playwright-report/
 .vite/
 .vscode/
 .idea/
+.claude/
 .DS_Store
