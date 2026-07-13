@@ -1,0 +1,157 @@
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-BmcqUMKx.js b/node_modules/@vidstack/react/prod/chunks/vidstack-BmcqUMKx.js
+index e47dd9f..2ee3cdf 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-BmcqUMKx.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-BmcqUMKx.js
+@@ -124,7 +124,7 @@ var YouTubeProvider = class extends EmbedProvider {
+ 		this.#currentSrc = src;
+ 	}
+ 	getOrigin() {
+-		return !this.cookies ? "https://www.youtube-nocookie.com" : "https://www.youtube.com";
++		return "";
+ 	}
+ 	#watchVideoId() {
+ 		this.#reset();
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-C0fPJIzs.js b/node_modules/@vidstack/react/prod/chunks/vidstack-C0fPJIzs.js
+index 94298e5..f0b5d09 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-C0fPJIzs.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-C0fPJIzs.js
+@@ -15,7 +15,7 @@ function resolveVimeoVideoId(src) {
+ async function getVimeoVideoInfo(videoId, abort, videoHash) {
+ 	if (infoCache.has(videoId)) return infoCache.get(videoId);
+ 	if (pendingFetch.has(videoId)) return pendingFetch.get(videoId);
+-	let oembedSrc = `https://vimeo.com/api/oembed.json?url=https://player.vimeo.com/video/${videoId}`;
++	let oembedSrc = "";
+ 	if (videoHash) oembedSrc = oembedSrc.concat(`?h=${videoHash}`);
+ 	const promise = window.fetch(oembedSrc, {
+ 		mode: "cors",
+@@ -37,7 +37,7 @@ function resolveVimeoPoster(data) {
+ 	const thumbnailUrl = data?.thumbnail_url ?? "", thumbnailId = thumbnailUrl.match(/vimeocdn\.com\/video\/([^_/?#]+)_/)?.[1];
+ 	if (!thumbnailId) return thumbnailUrl;
+ 	const dimensions = resolvePosterDimensions(data);
+-	return dimensions ? `https://i.vimeocdn.com/video/${thumbnailId}_${dimensions.width}x${dimensions.height}.webp` : thumbnailUrl;
++	return thumbnailUrl;
+ }
+ function resolvePosterDimensions(data) {
+ 	const width = data.width || data.thumbnail_width, height = data.height || data.thumbnail_height;
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-CvezEmSQ.js b/node_modules/@vidstack/react/prod/chunks/vidstack-CvezEmSQ.js
+index 5ed1611..74ab7d9 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-CvezEmSQ.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-CvezEmSQ.js
+@@ -1823,7 +1823,7 @@ function isDASHNamespace(value) {
+ //#endregion
+ //#region ../vidstack/src/providers/dash/provider.ts
+ var provider_exports = /* @__PURE__ */ __exportAll({ DASHProvider: () => DASHProvider });
+-const JS_DELIVR_CDN = "https://cdn.jsdelivr.net";
++const JS_DELIVR_CDN = "";
+ /**
+ * The DASH provider introduces support for DASH streaming via the popular `dash.js`
+ *
+@@ -1866,7 +1866,7 @@ var DASHProvider = class extends VideoProvider {
+ 	get canLiveSync() {
+ 		return true;
+ 	}
+-	#library = `${JS_DELIVR_CDN}/npm/dashjs@4.7.4/dist/dash.all.min.js`;
++	#library = "";
+ 	/**
+ 	* The `dash.js` configuration object.
+ 	*
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-DKRnfION.js b/node_modules/@vidstack/react/prod/chunks/vidstack-DKRnfION.js
+index 4ef18e5..d6729f4 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-DKRnfION.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-DKRnfION.js
+@@ -2135,11 +2135,7 @@ var VimeoProviderLoader = class {
+ 	name = "vimeo";
+ 	target;
+ 	preconnect() {
+-		for (const url of [
+-			"https://i.vimeocdn.com",
+-			"https://f.vimeocdn.com",
+-			"https://fresnel.vimeocdn.com"
+-		]) preconnect(url);
++		for (const url of []) preconnect(url);
+ 	}
+ 	canPlay(src) {
+ 		return isString(src.src) && src.type === "video/vimeo";
+@@ -2165,12 +2161,7 @@ var YouTubeProviderLoader = class {
+ 	name = "youtube";
+ 	target;
+ 	preconnect() {
+-		for (const url of [
+-			"https://www.google.com",
+-			"https://i.ytimg.com",
+-			"https://googleads.g.doubleclick.net",
+-			"https://static.doubleclick.net"
+-		]) preconnect(url);
++		for (const url of []) preconnect(url);
+ 	}
+ 	canPlay(src) {
+ 		return isString(src.src) && src.type === "video/youtube";
+@@ -2827,7 +2818,6 @@ var MediaRequestManager = class extends MediaPlayerController {
+ 				error.code = "CAST_NOT_AVAILABLE";
+ 				throw error;
+ 			}
+-			preconnect("https://www.gstatic.com");
+ 			if (!this.#googleCastLoader) {
+ 				const $module = await import("./vidstack-Di0HObvT.js");
+ 				this.#googleCastLoader = new $module.GoogleCastLoader();
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-DiaLSJYx.js b/node_modules/@vidstack/react/prod/chunks/vidstack-DiaLSJYx.js
+index 56ca8d2..031b6fb 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-DiaLSJYx.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-DiaLSJYx.js
+@@ -281,7 +281,7 @@ async function loadHLSScript(src, callbacks = {}) {
+ }
+ //#endregion
+ //#region ../vidstack/src/providers/hls/provider.ts
+-const JS_DELIVR_CDN = "https://cdn.jsdelivr.net";
++const JS_DELIVR_CDN = "";
+ /**
+ * The HLS provider introduces support for HLS streaming via the popular `hls.js`
+ * library. HLS streaming is either [supported natively](https://caniuse.com/?search=hls) (generally
+@@ -326,7 +326,7 @@ var HLSProvider = class extends VideoProvider {
+ 	get canLiveSync() {
+ 		return true;
+ 	}
+-	#library = `${JS_DELIVR_CDN}/npm/hls.js@^1.5.0/dist/hls.min.js`;
++	#library = "";
+ 	/**
+ 	* The `hls.js` configuration object.
+ 	*
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-Dy74GavT.js b/node_modules/@vidstack/react/prod/chunks/vidstack-Dy74GavT.js
+index b5731dc..2fce2ed 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-Dy74GavT.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-Dy74GavT.js
+@@ -31,7 +31,7 @@ async function findYouTubePoster(videoId, abort) {
+ 	return pending;
+ }
+ function resolveYouTubePosterURL(videoId, size, webp) {
+-	return `https://i.ytimg.com/${webp ? "vi_webp" : "vi"}/${videoId}/${size}.${webp ? "webp" : "jpg"}`;
++	return "";
+ }
+ //#endregion
+ export { findYouTubePoster, resolveYouTubeVideoId };
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-GkTzay8D.js b/node_modules/@vidstack/react/prod/chunks/vidstack-GkTzay8D.js
+index 0b4d8a1..053678c 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-GkTzay8D.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-GkTzay8D.js
+@@ -191,7 +191,7 @@ var VimeoProvider = class extends EmbedProvider {
+ 		});
+ 	}
+ 	getOrigin() {
+-		return "https://player.vimeo.com";
++		return "";
+ 	}
+ 	buildParams() {
+ 		const { keyDisabled } = this.#ctx.$props, { playsInline, nativeControls } = this.#ctx.$state, showControls = nativeControls();
+diff --git a/node_modules/@vidstack/react/prod/chunks/vidstack-aCAqaLv8.js b/node_modules/@vidstack/react/prod/chunks/vidstack-aCAqaLv8.js
+index 646795a..f23452d 100644
+--- a/node_modules/@vidstack/react/prod/chunks/vidstack-aCAqaLv8.js
++++ b/node_modules/@vidstack/react/prod/chunks/vidstack-aCAqaLv8.js
+@@ -3,7 +3,7 @@
+ import { listenEvent } from "./vidstack-B9fTkxQO.js";
+ //#region ../vidstack/src/providers/google-cast/utils.ts
+ function getCastFrameworkURL() {
+-	return "https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1";
++	return "/vendor/cast_sender.js";
+ }
+ /**
+ * Whether the Google Cast framework has loaded.

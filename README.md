@@ -67,6 +67,12 @@ curl -sf "https://www.gstatic.com/eureka/clank/cast_sender.js" -o public/vendor/
 curl -sf "https://www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js" -o public/vendor/cast_framework.js
 ```
 
+### Zdalne adresy skryptów
+
+Sklepy z rozszerzeniami wymagają, żeby cały kod znajdował się w paczce.
+Vidstack ma adresy zdalne wpisane na sztywno, więc usuwa je łatka z katalogu `patches/` ([patch-package](https://github.com/ds300/patch-package)).
+Build dodatkowo sprawdza gotową paczkę pod kątem zewnętrznych adresów.
+
 ## Prywatność
 
 Rozszerzenie nie zbiera ani nie wysyła żadnych danych. Wszystkie operacje wykonywane są lokalnie w przeglądarce, a transmisje są odtwarzane bezpośrednio z serwerów TVP. Szczegóły: [Polityka prywatności](PRIVACY.md).
